@@ -89,23 +89,26 @@ let handleMessage = (sender_psid, received_message) => {
 
         if(received_message.text === "webview"){
             response = {
-                "attachment":{
-                    "type":"template",
-                    "payload":{
-                        "template_type":"button",
-                        "text":"Click the button below to open webview?",
-                        "buttons":[
-                            {
-                                "type":"web_url",
-                                "url": WEBVIEW_URL,
-                                "title":"Welcome with webview",
-                                "webview_height_ratio" : "tall",
-                                "messenger_extension" : true
-                            }
-                        ]
-                    }
-                  }
-            };
+                "text" : "ok da vao dc webview"
+            }
+            // response = {
+            //     "attachment":{
+            //         "type":"template",
+            //         "payload":{
+            //             "template_type":"button",
+            //             "text":"Click the button below to open webview?",
+            //             "buttons":[
+            //                 {
+            //                     "type":"web_url",
+            //                     "url": WEBVIEW_URL,
+            //                     "title":"Welcome with webview",
+            //                     "webview_height_ratio" : "tall",
+            //                     "messenger_extension" : true
+            //                 }
+            //             ]
+            //         }
+            //       }
+            // };
         }
     } else if (received_message.attachments) {
         // Get the URL of the message attachment
