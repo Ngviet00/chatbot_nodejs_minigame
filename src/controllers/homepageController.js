@@ -88,32 +88,6 @@ let handleMessage = (sender_psid, received_message) => {
         }
 
         if(received_message.text === "webview"){
-            // response = {
-            //     "attachment": {
-            //         "type": "template",
-            //         "payload": {
-            //             "template_type": "generic",
-            //             "elements": [{
-            //                 "title": "Is this the right picture?",
-            //                 "subtitle": "Tap a button to answer.",
-            //                 "image_url": attachment_url,
-            //                 "buttons": [
-            //                     {
-            //                         "type": "postback",
-            //                         "title": "Yes!",
-            //                         "payload": "yes",
-            //                     },
-            //                     {
-            //                         "type": "postback",
-            //                         "title": "No!",
-            //                         "payload": "no",
-            //                     }
-            //                 ],
-            //             }]
-            //         }
-            //     }
-            // }
-
             response = {
                 "attachment": {
                     "type": "template",
@@ -132,26 +106,6 @@ let handleMessage = (sender_psid, received_message) => {
                     }
                 }
             }
-
-            //response = {
-                
-                // "attachment":{
-                //     "type":"template",
-                //     "payload":{
-                //         "template_type":"button",
-                //         "text":"Click the button below to open webview?",
-                //         "buttons":[
-                //             {
-                //                 "type":"web_url",
-                //                 "url": WEBVIEW_URL,
-                //                 "title":"Welcome with webview",
-                //                 "webview_height_ratio" : "tall",
-                //                 "messenger_extension" : true
-                //             }
-                //         ]
-                //     }
-                //   }
-            //};
         }
     } else if (received_message.attachments) {
         // Get the URL of the message attachment
@@ -235,6 +189,10 @@ let getWebViewPage = (req, res)=>{
 
 let handleWebView = (req, res)=>{
     console.log(req.body);
+    let response = {
+        "text" : `Great, this your information , NAME: ${req.body.name}, PHONE: ${req.body.phone}`
+    };
+    callSendAPI(req.body.psid, response);
     return res.redirect("/");
 }
 
