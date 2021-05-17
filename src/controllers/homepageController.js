@@ -88,49 +88,70 @@ let handleMessage = (sender_psid, received_message) => {
         }
 
         if(received_message.text === "webview"){
+            // response = {
+            //     "attachment": {
+            //         "type": "template",
+            //         "payload": {
+            //             "template_type": "generic",
+            //             "elements": [{
+            //                 "title": "Is this the right picture?",
+            //                 "subtitle": "Tap a button to answer.",
+            //                 "image_url": attachment_url,
+            //                 "buttons": [
+            //                     {
+            //                         "type": "postback",
+            //                         "title": "Yes!",
+            //                         "payload": "yes",
+            //                     },
+            //                     {
+            //                         "type": "postback",
+            //                         "title": "No!",
+            //                         "payload": "no",
+            //                     }
+            //                 ],
+            //             }]
+            //         }
+            //     }
+            // }
+
             response = {
                 "attachment": {
                     "type": "template",
                     "payload": {
-                        "template_type": "generic",
-                        "elements": [{
-                            "title": "Is this the right picture?",
-                            "subtitle": "Tap a button to answer.",
-                            "image_url": attachment_url,
-                            "buttons": [
-                                {
-                                    "type": "postback",
-                                    "title": "Yes!",
-                                    "payload": "yes",
-                                },
-                                {
-                                    "type": "postback",
-                                    "title": "No!",
-                                    "payload": "no",
-                                }
-                            ],
-                        }]
+                        "template_type": "button",
+                        "text": "click below to open webview",
+                        "buttons": [
+                            {
+                                "type": "web_url",
+                                "url": WEBVIEW_URL,
+                                "title": "province",
+                                "messenger_extensions": "true",
+                                "webview_height_ratio": "tall"
+                            }
+                        ]
                     }
                 }
             }
-            // response = {
-            //     "attachment":{
-            //         "type":"template",
-            //         "payload":{
-            //             "template_type":"button",
-            //             "text":"Click the button below to open webview?",
-            //             "buttons":[
-            //                 {
-            //                     "type":"web_url",
-            //                     "url": WEBVIEW_URL,
-            //                     "title":"Welcome with webview",
-            //                     "webview_height_ratio" : "tall",
-            //                     "messenger_extension" : true
-            //                 }
-            //             ]
-            //         }
-            //       }
-            // };
+
+            //response = {
+                
+                // "attachment":{
+                //     "type":"template",
+                //     "payload":{
+                //         "template_type":"button",
+                //         "text":"Click the button below to open webview?",
+                //         "buttons":[
+                //             {
+                //                 "type":"web_url",
+                //                 "url": WEBVIEW_URL,
+                //                 "title":"Welcome with webview",
+                //                 "webview_height_ratio" : "tall",
+                //                 "messenger_extension" : true
+                //             }
+                //         ]
+                //     }
+                //   }
+            //};
         }
     } else if (received_message.attachments) {
         // Get the URL of the message attachment
