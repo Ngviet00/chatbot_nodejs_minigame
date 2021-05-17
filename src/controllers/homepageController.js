@@ -189,10 +189,13 @@ let getWebViewPage = (req, res)=>{
 
 let handleWebView = (req, res)=>{
     console.log(req.body);
-    let response = {
+
+    let a = {
         "text" : `Great, this your information , NAME: ${req.body.name}, PHONE: ${req.body.number}`
     };
-    callSendAPI(req.body.psid, response);
+
+    callSendAPI(req.body.psid, a);
+    
     return res.redirect("/");
 }
 
