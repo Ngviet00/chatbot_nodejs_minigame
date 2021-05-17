@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>set form register</title>
+</head>
+
+<script>
+
+   (function(d, s, id){
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) {return;}
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+      fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'Messenger'));
+
+   window.extAsyncInit = function() {
+      MessengerExtensions.getContext('197041085597301', 
+         function success(thread_context){
+            document.getElementById("psid").value(thread_context.psid);
+         },
+         function error(err){
+            console.log(err);
+         }
+      );
+   };
+
+   function handleSaveBtn(){
+      MessengerExtensions.requestCloseBrowser(function success() {
+         // webview closed
+      }, function error(err) {
+      console.log(err);
+      });
+   }
+
+</script>
+
+<body>
+   <form method="POST" action="/set-up-webview">
+      <input type="text" hidden name="psid" id="psid">
+      <label for="name">Name</label>
+      <input type="text" id="name" value="" name="name"><br>
+
+      <label for="number">Number</label>
+      <input type="text" id="number" value="" name="number"><br>
+      
+      <button type="submit" onclick="handleSaveBtn()">save</button>
+   </form>
+</body>
+</html>
