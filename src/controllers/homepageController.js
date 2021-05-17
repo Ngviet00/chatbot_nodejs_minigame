@@ -87,7 +87,7 @@ let handleMessage = (sender_psid, received_message) => {
             "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
         }
 
-        if(received_message.text.toLowerCase() === "webview"){
+        if(received_message.text === "webview"){
             response = {
                 "attachment":{
                     "type":"template",
