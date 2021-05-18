@@ -3,12 +3,12 @@ import request from "request";
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-const WEBVIEW_URL = process.env.WEBVIEW_URL;
+// const WEBVIEW_URL = process.env.WEBVIEW_URL;
 
 let getHomepage = (req, res) => {
     return res.render("homepage.ejs");
 };
-
+// cần thiết
 let getWebhook = (req, res) => {
 
     // Your verify token. Should be a random string.
@@ -36,6 +36,7 @@ let getWebhook = (req, res) => {
     }
 };
 
+// rất cần thiết
 let postWebhook = (req, res) => {
     // Parse the request body from the POST
     let body = req.body;
@@ -74,89 +75,89 @@ let postWebhook = (req, res) => {
     }
 
 };
-
+//cái này trả về
 // Handles messages events
-let handleMessage = (sender_psid, received_message) => {
-    let response;
+// let handleMessage = (sender_psid, received_message) => {
+//     let response;
 
-    // Checks if the message contains text
-    if (received_message.text) {
-        // Create the payload for a basic text message, which
-        // will be added to the body of our request to the Send API
-        response = {
-            "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
-        }
+//     // Checks if the message contains text
+//     if (received_message.text) {
+//         // Create the payload for a basic text message, which
+//         // will be added to the body of our request to the Send API
+//         response = {
+//             "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
+//         }
 
-        if(received_message.text === "webview"){
-            response = {
-                "attachment": {
-                    "type": "template",
-                    "payload": {
-                        "template_type": "button",
-                        "text": "click below to open webview",
-                        "buttons": [
-                            {
-                                "type": "web_url",
-                                "url": WEBVIEW_URL,
-                                "title": "province",
-                                "messenger_extensions": "true",
-                                "webview_height_ratio": "tall"
-                            }
-                        ]
-                    }
-                }
-            }
-        }
-    } else if (received_message.attachments) {
-        // Get the URL of the message attachment
-        let attachment_url = received_message.attachments[0].payload.url;
-        response = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": "Is this the right picture?",
-                        "subtitle": "Tap a button to answer.",
-                        "image_url": attachment_url,
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Yes!",
-                                "payload": "yes",
-                            },
-                            {
-                                "type": "postback",
-                                "title": "No!",
-                                "payload": "no",
-                            }
-                        ],
-                    }]
-                }
-            }
-        }
-    }
+//         if(received_message.text === "webview"){
+//             response = {
+//                 "attachment": {
+//                     "type": "template",
+//                     "payload": {
+//                         "template_type": "button",
+//                         "text": "click below to open webview",
+//                         "buttons": [
+//                             {
+//                                 "type": "web_url",
+//                                 "url": WEBVIEW_URL,
+//                                 "title": "province",
+//                                 "messenger_extensions": "true",
+//                                 "webview_height_ratio": "tall"
+//                             }
+//                         ]
+//                     }
+//                 }
+//             }
+//         }
+//     } else if (received_message.attachments) {
+//         // Get the URL of the message attachment
+//         let attachment_url = received_message.attachments[0].payload.url;
+//         response = {
+//             "attachment": {
+//                 "type": "template",
+//                 "payload": {
+//                     "template_type": "generic",
+//                     "elements": [{
+//                         "title": "Is this the right picture?",
+//                         "subtitle": "Tap a button to answer.",
+//                         "image_url": attachment_url,
+//                         "buttons": [
+//                             {
+//                                 "type": "postback",
+//                                 "title": "Yes!",
+//                                 "payload": "yes",
+//                             },
+//                             {
+//                                 "type": "postback",
+//                                 "title": "No!",
+//                                 "payload": "no",
+//                             }
+//                         ],
+//                     }]
+//                 }
+//             }
+//         }
+//     }
 
-    // Send the response message
-    callSendAPI(sender_psid, response);
-};
+//     // Send the response message
+//     callSendAPI(sender_psid, response);
+// };
 
 // Handles messaging_postbacks events
-let handlePostback = (sender_psid, received_postback) => {
-    let response;
+// let handlePostback = (sender_psid, received_postback) => {
+//     let response;
 
-    // Get the payload for the postback
-    let payload = received_postback.payload;
+//     // Get the payload for the postback
+//     let payload = received_postback.payload;
 
-    // Set the response based on the postback payload
-    if (payload === 'yes') {
-        response = { "text": "Thanks!" }
-    } else if (payload === 'no') {
-        response = { "text": "Oops, try sending another image." }
-    }
-    // Send the message to acknowledge the postback
-    callSendAPI(sender_psid, response);
-};
+//     // Set the response based on the postback payload
+//     if (payload === 'yes') {
+//         response = { "text": "Thanks!" }
+//     } else if (payload === 'no') {
+//         response = { "text": "Oops, try sending another image." }
+//     }
+//     // Send the message to acknowledge the postback
+//     callSendAPI(sender_psid, response);
+// };
 
 // Sends response messages via the Send API
 let callSendAPI = (sender_psid, response) => {
