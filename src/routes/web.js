@@ -11,7 +11,6 @@ let initWebRoutes = (app) => {
     router.get("/webview", homepageController.getWebViewPage);
     router.post("/set-up-webview", homepageController.handleWebView);
 
-
     return app.use("/", router);
 };
 
