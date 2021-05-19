@@ -195,12 +195,10 @@ let handleWebView = (req, res)=>{
                 NAME: ${req.body.name}, 
                 PHONE: ${req.body.number},
                 EMAIL: ${req.body.email}, 
-                DOB: ${req.body.dtime},
+                DOB: ${req.body.txtDate},
                 MAJOR: ${req.body.major},
                 ADDRESS: ${req.body.address}`
     };
-
-    console.log(req.body.name);
 
     callSendAPI(req.body.psid, a);
     
