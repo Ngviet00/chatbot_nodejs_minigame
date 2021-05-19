@@ -202,9 +202,9 @@ let handleWebView = (req, res)=>{
 
     console.log(req.body.name);
 
-    // callSendAPI(req.body.psid, a);
+    callSendAPI(req.body.psid, a);
     
-    // return res.redirect("/");
+    return res.redirect("/");
 }
 
 module.exports = {
