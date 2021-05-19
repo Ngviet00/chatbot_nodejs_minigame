@@ -189,15 +189,22 @@ let getWebViewPage = (req, res)=>{
 }
 
 let handleWebView = (req, res)=>{
-    console.log(req.body);
 
     let a = {
-        "text" : `Great, this your information , NAME: ${req.body.name}, PHONE: ${req.body.number}`
+        "text" : `Great, this your information , 
+                NAME: ${req.body.name}, 
+                PHONE: ${req.body.number},
+                EMAIL: ${req.body.email}, 
+                DOB: ${req.body.dtime},
+                MAJOR: ${req.body.major},
+                ADDRESS: ${req.body.address}`
     };
 
-    callSendAPI(req.body.psid, a);
+    console.log(req.body.name);
+
+    // callSendAPI(req.body.psid, a);
     
-    return res.redirect("/");
+    // return res.redirect("/");
 }
 
 module.exports = {
