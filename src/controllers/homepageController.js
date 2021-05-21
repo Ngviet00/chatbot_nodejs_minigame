@@ -193,6 +193,7 @@ let getSpinWheel = (req, res)=>{
 }
 
 let handleWebView = (req, res)=>{
+
     let response = {
         "text" : `Great, this your information , 
                 NAME: ${req.body.name}, 
@@ -202,7 +203,26 @@ let handleWebView = (req, res)=>{
                 MAJOR: ${req.body.major},
                 ADDRESS: ${req.body.address}`
     };
+    let mes = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "button",
+                "text": "bạn có 1 phần thưởng, nhấn xuống đây.",
+                "buttons": [
+                    {
+                        "type": "web_url",
+                        "url": "https://webview-chatbot.herokuapp.com/spin",
+                        "title": "province",
+                        "messenger_extensions": "true",
+                        "webview_height_ratio": "tall"
+                    }
+                ]
+            }
+        }
+    }
     callSendAPI(req.body.psid, response);
+    callSendAPI(req.body.psid, mes);
     return res.redirect("/");
     //hàm gửi mail về cho nhà trường
     //sendmail()
