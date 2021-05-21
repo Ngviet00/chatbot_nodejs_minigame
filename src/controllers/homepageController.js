@@ -188,9 +188,12 @@ let getWebViewPage = (req, res)=>{
     return res.render("register.ejs");
 }
 
-let handleWebView = (req, res)=>{
+let getSpinWheel = (req, res)=>{
+    return res.render("spinwheel.ejs");
+}
 
-    let a = {
+let handleWebView = (req, res)=>{
+    let response = {
         "text" : `Great, this your information , 
                 NAME: ${req.body.name}, 
                 PHONE: ${req.body.number},
@@ -199,9 +202,19 @@ let handleWebView = (req, res)=>{
                 MAJOR: ${req.body.major},
                 ADDRESS: ${req.body.address}`
     };
-
-    callSendAPI(req.body.psid, a);
+    callSendAPI(req.body.psid, response);
+    return res.redirect("/");
+    //hàm gửi mail về cho nhà trường
+    //sendmail()
     
+    
+}
+
+let handSpinWheel = (req, res)=>{
+    let response = {
+        "text" : `Chúc mừng bạn đã trúng 1 phần thưởng: ${req.body.display_value_spin}`
+    };
+    callSendAPI(req.body.psid, response);
     return res.redirect("/");
 }
 
@@ -210,5 +223,7 @@ module.exports = {
     getWebhook: getWebhook,
     postWebhook: postWebhook,
     getWebViewPage: getWebViewPage,
-    handleWebView: handleWebView
+    handleWebView: handleWebView,
+    getSpinWheel: getSpinWheel,
+    handSpinWheel: handSpinWheel
 };

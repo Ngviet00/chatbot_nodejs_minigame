@@ -9,6 +9,7 @@ let app = express();
 //config body-parser to post data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use( express.static( "public" ) );
 
 //config view engine
 configViewEngine(app);
