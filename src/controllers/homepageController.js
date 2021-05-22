@@ -2,68 +2,69 @@ require("dotenv").config();
 import request from "request";
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-const { MongoClient } = require("mongodb");
-const URI = process.env.URI;
-const client = new MongoClient(URI);
-const dbName = "chatbot";
+var User = require('./../DB/User');
 
-let getWebViewPage = (req, res)=>{
+let getWebViewPage = (req, res) => {
     return res.render("register.ejs");
 }
 
-let getSpinWheel = async (req, res)=>{
-
-    const myDoc = await col.findOne({psid : req.body.psid }, {views:1,_id:0});
-    return res.render("spinwheel.ejs", {myDoc: myDoc });
+let getSpinWheel = async (req, res) => {
+    try {
+        let myDoc = await User.findOne({ psid: "1234" }, { prize: 1, _id: 0 });
+        return res.render("spinwheel.ejs", { myDoc: myDoc });
+    } catch (err) {
+        console.log(err);
+    }
 }
 
-let handleWebView = async (req, res)=>{
-
-    const db = client.db(dbName);
-    const col = db.collection("user");
-
-    let userDocument = {
-        psid : req.body.psid,                                                                                                                               
-        name : req.body.name,
-        number : req.body.number,
-        email : req.body.email,
-        txtDate : req.body.txtDate,
-        major : req.body.major,
-        address : req.body.address,
-        prize : ""
-    }
-    await col.insertOne(userDocument);
-
-    let response = {
-        "text" : `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!
-                  \nChúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
-    };
-    let prize = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "button",
-                "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng,Tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
-                "buttons": [
-                    {
-                        "type": "web_url",
-                        "url": "https://webview-chatbot.herokuapp.com/spin",
-                        "title": "QUAY THƯỞNG",
-                        "messenger_extensions": "true",
-                        "webview_height_ratio": "tall"
-                    }
-                ]
+let handleWebView = async (req, res) => {
+    try {
+        var newUser = new User();
+        newUser.psid = req.body.psid;
+        newUser.name = req.body.name;
+        newUser.number = req.body.number;
+        newUser.email = req.body.email;
+        newUser.txtDate = req.body.txtDate;
+        newUser.major = req.body.major;
+        newUser.address = req.body.address;
+        newUser.prize = "";
+        await newUser.save().then(function (err) {
+            if (err) { console.log(err) }
+        })
+        let response = {
+            "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!
+                      \nChúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+        };
+        let prize = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng,Tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
+                    "buttons": [
+                        {
+                            "type": "web_url",
+                            "url": "https://webview-chatbot.herokuapp.com/spin",
+                            "title": "QUAY THƯỞNG",
+                            "messenger_extensions": "true",
+                            "webview_height_ratio": "tall"
+                        }
+                    ]
+                }
             }
         }
+        callSendAPI(req.body.psid, response);
+        callSendAPI(req.body.psid, prize);
+        return res.redirect("/");
+
+    } catch (err) {
+        console.log(err);
     }
-    callSendAPI(req.body.psid, response);
-    callSendAPI(req.body.psid, prize);
-    return res.redirect("/");
 }
 
-let handSpinWheel = (req, res)=>{
+let handSpinWheel = (req, res) => {
     let response = {
-        "text" : `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+        "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
     };
     callSendAPI(req.body.psid, response);
     //update mongodb
@@ -110,7 +111,7 @@ let postWebhook = (req, res) => {
     if (body.object === 'page') {
 
         // Iterate over each entry - there may be multiple if batched
-        body.entry.forEach(function(entry) {
+        body.entry.forEach(function (entry) {
 
             // Gets the body of the webhook event
             let webhook_event = entry.messaging[0];
@@ -171,88 +172,3 @@ module.exports = {
     getSpinWheel: getSpinWheel,
     handSpinWheel: handSpinWheel
 };
-
-
-//cái này trả về
-// Handles messages events
-// let handleMessage = (sender_psid, received_message) => {
-//     let response;
-
-//     // Checks if the message contains text
-//     if (received_message.text) {
-//         // Create the payload for a basic text message, which
-//         // will be added to the body of our request to the Send API
-//         response = {
-//             "text": `You sent the message: "${received_message.text}". Now send me an attachment!`
-//         }
-
-//         if(received_message.text === "webview"){
-//             response = {
-//                 "attachment": {
-//                     "type": "template",
-//                     "payload": {
-//                         "template_type": "button",
-//                         "text": "click below to open webview",
-//                         "buttons": [
-//                             {
-//                                 "type": "web_url",
-//                                 "url": WEBVIEW_URL,
-//                                 "title": "province",
-//                                 "messenger_extensions": "true",
-//                                 "webview_height_ratio": "tall"
-//                             }
-//                         ]
-//                     }
-//                 }
-//             }
-//         }
-//     } else if (received_message.attachments) {
-//         // Get the URL of the message attachment
-//         let attachment_url = received_message.attachments[0].payload.url;
-//         response = {
-//             "attachment": {
-//                 "type": "template",
-//                 "payload": {
-//                     "template_type": "generic",
-//                     "elements": [{
-//                         "title": "Is this the right picture?",
-//                         "subtitle": "Tap a button to answer.",
-//                         "image_url": attachment_url,
-//                         "buttons": [
-//                             {
-//                                 "type": "postback",
-//                                 "title": "Yes!",
-//                                 "payload": "yes",
-//                             },
-//                             {
-//                                 "type": "postback",
-//                                 "title": "No!",
-//                                 "payload": "no",
-//                             }
-//                         ],
-//                     }]
-//                 }
-//             }
-//         }
-//     }
-
-//     // Send the response message
-//     callSendAPI(sender_psid, response);
-// };
-
-// Handles messaging_postbacks events
-// let handlePostback = (sender_psid, received_postback) => {
-//     let response;
-
-//     // Get the payload for the postback
-//     let payload = received_postback.payload;
-
-//     // Set the response based on the postback payload
-//     if (payload === 'yes') {
-//         response = { "text": "Thanks!" }
-//     } else if (payload === 'no') {
-//         response = { "text": "Oops, try sending another image." }
-//     }
-//     // Send the message to acknowledge the postback
-//     callSendAPI(sender_psid, response);
-// };

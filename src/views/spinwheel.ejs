@@ -11,7 +11,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   </head>
   <body>
-    <% if (check==true) { %>
+    <% if (myDoc.views != "") { %>
     <h1>Bạn đã hết lượt quay</h1>
     <% }else { %>
     <div id="spin" align="center" style="position: relative">
@@ -82,75 +82,7 @@
       </table>
     </div>
     <% } %>
-    <!-- spin -->
 
-    <!-- <div id="spin" align="center" style="position: relative">
-      <form
-        action="/set-up-spin"
-        method="POST"
-        id="verify"
-        class="form-container"
-      >
-        <input type="text" hidden name="psid" id="psid" />
-        <h3>Thông Báo</h3>
-        <p>Chúc mừng bạn đã trúng 1 phần thưởng:</p>
-        <input
-          id="display_value_spin"
-          type="text"
-          name="display_value_spin"
-          value=""
-        />
-        <button type="submit" class="btn" onclick="handleSaveBtn();">
-          Xác Nhận
-        </button>
-      </form>
-
-      <table cellpadding="0" cellspacing="0" border="0">
-        <tr style="display: flex; flex-direction: column-reverse">
-          <td>
-            <div
-              class="power_controls"
-              style="text-align: center; margin-top: 2em"
-            >
-              <button id="btn_play" onClick="startSpin();">PLAY</button>
-            </div>
-          </td>
-          <td
-            width="426"
-            height="434"
-            class="the_wheel"
-            align="center"
-            valign="center"
-          >
-            <div style="position: relative">
-              <canvas
-                id="canvas"
-                style="z-index: 1"
-                width="426"
-                height="434"
-                data-responsiveMinWidth="180"
-                data-responsiveScaleHeight="true"
-                onClick="startSpin();"
-              >
-              </canvas>
-              <div
-                class="triangle-down"
-                style="
-                  position: absolute;
-                  top: -50px;
-                  right: 55%;
-                  z-index: 9;
-                  width: 0;
-                  height: 0;
-                "
-              >
-                <img style="z-index: 11111" src="basic_pointer.png" alt="" />
-              </div>
-            </div>
-          </td>
-        </tr>
-      </table>
-    </div> -->
     <script>
       let theWheel = new Winwheel({
         drawMode: "image",
@@ -191,8 +123,6 @@
         if (wheelSpinning == false) {
           calculatePrize();
           theWheel.animation.spins = 8;
-          document.getElementById("spin_button").src = "spin_off.png";
-          document.getElementById("spin_button").className = "";
           theWheel.startAnimation();
           wheelSpinning = true;
         }
