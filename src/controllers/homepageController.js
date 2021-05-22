@@ -10,8 +10,9 @@ let getWebViewPage = (req, res) => {
 
 let getSpinWheel = async (req, res) => {
     try {
-        let myDoc = await User.findOne({ psid: "1234" }, { prize: 1, _id: 0 });
-        return res.render("spinwheel.ejs", { myDoc: myDoc });
+        let myDoc = await User.findOne({ psid: req.body.psid }, { prize: 1, _id: 0 });
+        const value = myDoc.views;
+        return res.render("spinwheel.ejs", { value: value });
     } catch (err) {
         console.log(err);
     }
