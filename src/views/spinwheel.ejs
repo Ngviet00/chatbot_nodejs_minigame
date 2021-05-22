@@ -11,8 +11,18 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   </head>
   <body>
-    <% if (value != "") { %>
-    <h1>Bạn đã hết lượt quay</h1>
+    <% if (tempp !== "") { %>
+    <h1>Bạn đã hết lượt quay thưởng</h1>
+    <canvas
+      style="display: none"
+      id="canvas"
+      style="z-index: 1"
+      width="426"
+      height="434"
+      data-responsiveMinWidth="180"
+      data-responsiveScaleHeight="true"
+    >
+    </canvas>
     <% }else { %>
     <div id="spin" align="center" style="position: relative">
       <form
@@ -25,6 +35,7 @@
         <h3>Thông Báo</h3>
         <p>Chúc mừng bạn đã trúng 1 phần thưởng:</p>
         <input
+          readonly
           id="display_value_spin"
           type="text"
           name="display_value_spin"
@@ -60,7 +71,6 @@
                 height="434"
                 data-responsiveMinWidth="180"
                 data-responsiveScaleHeight="true"
-                onClick="startSpin();"
               >
               </canvas>
               <div

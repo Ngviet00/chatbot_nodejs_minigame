@@ -10,9 +10,14 @@ let getWebViewPage = (req, res) => {
 
 let getSpinWheel = async (req, res) => {
     try {
-        let myDoc = await User.findOne({ psid: req.body.psid }, { prize: 1, _id: 0 });
-        const value = myDoc.views;
-        return res.render("spinwheel.ejs", { value: value });
+        var myDoc = await User.findOne({ psid: req.body.psid }).count() > 0;
+        if (myDoc) {
+            var getPrize = await User.findOne({ psid: req.body.psid }, { prize: 1, _id: 0 });
+            var tempp = getPrize.prize;
+            return res.render("spinwheel.ejs", { tempp: tempp });
+        } else {
+            return res.render("spinwheel.ejs", { check: true });
+        }
     } catch (err) {
         console.log(err);
     }
@@ -63,12 +68,16 @@ let handleWebView = async (req, res) => {
     }
 }
 
-let handSpinWheel = (req, res) => {
+let handSpinWheel = async (req, res) => {
     let response = {
         "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
     };
     callSendAPI(req.body.psid, response);
-    //update mongodb
+
+    await User.update(
+        { "psid": req.body.psid },
+        { $set: { "prize": req.body.display_value_spin } });
+    console.log("Update success");
     return res.redirect("/");
 }
 
