@@ -13,8 +13,7 @@ let getSpinWheel = async (req, res) => {
         var myDoc = await User.findOne({ psid: req.body.psid }).count() > 0;
         if (myDoc) {
             var getPrize = await User.findOne({ psid: req.body.psid }, { prize: 1, _id: 0 });
-            var tempp = getPrize.prize;
-            return res.render("spinwheel.ejs", { tempp: tempp });
+            return res.render("spinwheel.ejs", { getPrize: getPrize });
         } else {
             return res.render("spinwheel.ejs", { check: true });
         }
