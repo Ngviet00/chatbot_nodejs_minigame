@@ -1,10 +1,78 @@
 require("dotenv").config();
 import request from "request";
-const mongoose = require('mongoose');
-const User = require('./../DB/User');
-
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const { MongoClient } = require("mongodb");
+const URI = process.env.URI;
+const client = new MongoClient(URI);
+const dbName = "chatbot";
+
+let getWebViewPage = (req, res)=>{
+    return res.render("register.ejs");
+}
+
+let getSpinWheel = async (req, res)=>{
+
+    const myDoc = await col.findOne({psid : req.body.psid }, {views:1,_id:0});
+    return res.render("spinwheel.ejs", {myDoc: myDoc });
+}
+
+let handleWebView = async (req, res)=>{
+
+    const db = client.db(dbName);
+    const col = db.collection("user");
+
+    let userDocument = {
+        psid : req.body.psid,                                                                                                                               
+        name : req.body.name,
+        number : req.body.number,
+        email : req.body.email,
+        txtDate : req.body.txtDate,
+        major : req.body.major,
+        address : req.body.address,
+        prize : ""
+    }
+    await col.insertOne(userDocument);
+
+    let response = {
+        "text" : `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!
+                  \nChúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+    };
+    let prize = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "button",
+                "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng,Tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
+                "buttons": [
+                    {
+                        "type": "web_url",
+                        "url": "https://webview-chatbot.herokuapp.com/spin",
+                        "title": "QUAY THƯỞNG",
+                        "messenger_extensions": "true",
+                        "webview_height_ratio": "tall"
+                    }
+                ]
+            }
+        }
+    }
+    callSendAPI(req.body.psid, response);
+    callSendAPI(req.body.psid, prize);
+    return res.redirect("/");
+}
+
+let handSpinWheel = (req, res)=>{
+    let response = {
+        "text" : `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+    };
+    callSendAPI(req.body.psid, response);
+    //update mongodb
+    return res.redirect("/");
+}
+
+let getHomepage = (req, res) => {
+    return res.render("homepage.ejs");
+};
 
 let getWebhook = (req, res) => {
 
@@ -93,67 +161,6 @@ let callSendAPI = (sender_psid, response) => {
         }
     });
 };
-
-let getHomepage = (req, res) => {
-    return res.render("homepage.ejs");
-};
-
-let getWebViewPage = (req, res)=>{
-    return res.render("register.ejs");
-}
-
-let getSpinWheel = (req, res)=>{
-    var check = true;
-    return res.render("spinwheel.ejs", {check: check});
-}
-
-let handleWebView = async (req, res)=>{
-    let user = {};
-    user.psid = req.body.psid;
-    user.name = req.body.name;
-    user.number = req.body.number;
-    user.email = req.body.email;
-    user.txtDate = req.body.txtDate;
-    user.major = req.body.major;
-    user.address = req.body.address;
-    user.prize = "";
-    let userModel = new User(user);
-    await userModel.save();
-
-    let response = {
-        "text" : `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!
-                  \nChúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
-    };
-    let prize = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "button",
-                "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng,Tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
-                "buttons": [
-                    {
-                        "type": "web_url",
-                        "url": "https://webview-chatbot.herokuapp.com/spin",
-                        "title": "QUAY THƯỞNG",
-                        "messenger_extensions": "true",
-                        "webview_height_ratio": "tall"
-                    }
-                ]
-            }
-        }
-    }
-    callSendAPI(req.body.psid, response);
-    callSendAPI(req.body.psid, prize);
-    return res.redirect("/");
-}
-
-let handSpinWheel = (req, res)=>{
-    let response = {
-        "text" : `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
-    };
-    callSendAPI(req.body.psid, response);
-    return res.redirect("/");
-}
 
 module.exports = {
     getHomepage: getHomepage,
