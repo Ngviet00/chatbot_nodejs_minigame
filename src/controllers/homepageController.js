@@ -1,14 +1,11 @@
 require("dotenv").config();
 import request from "request";
+const mongoose = require('mongoose');
+const User = require('./../DB/User');
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
-// const WEBVIEW_URL = process.env.WEBVIEW_URL;
 
-let getHomepage = (req, res) => {
-    return res.render("homepage.ejs");
-};
-// cần thiết
 let getWebhook = (req, res) => {
 
     // Your verify token. Should be a random string.
@@ -51,7 +48,6 @@ let postWebhook = (req, res) => {
             let webhook_event = entry.messaging[0];
             console.log(webhook_event);
 
-
             // Get the sender PSID
             let sender_psid = webhook_event.sender.id;
             console.log('Sender PSID: ' + sender_psid);
@@ -73,8 +69,103 @@ let postWebhook = (req, res) => {
         // Return a '404 Not Found' if event is not from a page subscription
         res.sendStatus(404);
     }
-
 };
+
+let callSendAPI = (sender_psid, response) => {
+
+    let request_body = {
+        "recipient": {
+            "id": sender_psid
+        },
+        "message": response
+    };
+
+    request({
+        "uri": "https://graph.facebook.com/v6.0/me/messages",
+        "qs": { "access_token": PAGE_ACCESS_TOKEN },
+        "method": "POST",
+        "json": request_body
+    }, (err, res, body) => {
+        if (!err) {
+            console.log('message sent!')
+        } else {
+            console.error("Unable to send message:" + err);
+        }
+    });
+};
+
+let getHomepage = (req, res) => {
+    return res.render("homepage.ejs");
+};
+
+let getWebViewPage = (req, res)=>{
+    return res.render("register.ejs");
+}
+
+let getSpinWheel = (req, res)=>{
+    var check = true;
+    return res.render("spinwheel.ejs", {check: check});
+}
+
+let handleWebView = async (req, res)=>{
+    let user = {};
+    user.psid = req.body.psid;
+    user.name = req.body.name;
+    user.number = req.body.number;
+    user.email = req.body.email;
+    user.txtDate = req.body.txtDate;
+    user.major = req.body.major;
+    user.address = req.body.address;
+    user.prize = "";
+    let userModel = new User(user);
+    await userModel.save();
+
+    let response = {
+        "text" : `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!
+                  \nChúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+    };
+    let prize = {
+        "attachment": {
+            "type": "template",
+            "payload": {
+                "template_type": "button",
+                "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng,Tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
+                "buttons": [
+                    {
+                        "type": "web_url",
+                        "url": "https://webview-chatbot.herokuapp.com/spin",
+                        "title": "QUAY THƯỞNG",
+                        "messenger_extensions": "true",
+                        "webview_height_ratio": "tall"
+                    }
+                ]
+            }
+        }
+    }
+    callSendAPI(req.body.psid, response);
+    callSendAPI(req.body.psid, prize);
+    return res.redirect("/");
+}
+
+let handSpinWheel = (req, res)=>{
+    let response = {
+        "text" : `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+    };
+    callSendAPI(req.body.psid, response);
+    return res.redirect("/");
+}
+
+module.exports = {
+    getHomepage: getHomepage,
+    getWebhook: getWebhook,
+    postWebhook: postWebhook,
+    getWebViewPage: getWebViewPage,
+    handleWebView: handleWebView,
+    getSpinWheel: getSpinWheel,
+    handSpinWheel: handSpinWheel
+};
+
+
 //cái này trả về
 // Handles messages events
 // let handleMessage = (sender_psid, received_message) => {
@@ -158,92 +249,3 @@ let postWebhook = (req, res) => {
 //     // Send the message to acknowledge the postback
 //     callSendAPI(sender_psid, response);
 // };
-
-// Sends response messages via the Send API
-let callSendAPI = (sender_psid, response) => {
-    // Construct the message body
-    let request_body = {
-        "recipient": {
-            "id": sender_psid
-        },
-        "message": response
-    };
-
-    // Send the HTTP request to the Messenger Platform
-    request({
-        "uri": "https://graph.facebook.com/v6.0/me/messages",
-        "qs": { "access_token": PAGE_ACCESS_TOKEN },
-        "method": "POST",
-        "json": request_body
-    }, (err, res, body) => {
-        if (!err) {
-            console.log('message sent!')
-        } else {
-            console.error("Unable to send message:" + err);
-        }
-    });
-};
-
-let getWebViewPage = (req, res)=>{
-    return res.render("register.ejs");
-}
-
-let getSpinWheel = (req, res)=>{
-    return res.render("spinwheel.ejs");
-}
-
-let handleWebView = (req, res)=>{
-
-    let response = {
-        "text" : `Great, this your information , 
-                NAME: ${req.body.name}, 
-                PHONE: ${req.body.number},
-                EMAIL: ${req.body.email}, 
-                DOB: ${req.body.txtDate},
-                MAJOR: ${req.body.major},
-                ADDRESS: ${req.body.address}`
-    };
-    let mes = {
-        "attachment": {
-            "type": "template",
-            "payload": {
-                "template_type": "button",
-                "text": "bạn có 1 phần thưởng, nhấn xuống đây.",
-                "buttons": [
-                    {
-                        "type": "web_url",
-                        "url": "https://webview-chatbot.herokuapp.com/spin",
-                        "title": "province",
-                        "messenger_extensions": "true",
-                        "webview_height_ratio": "tall"
-                    }
-                ]
-            }
-        }
-    }
-    callSendAPI(req.body.psid, response);
-    callSendAPI(req.body.psid, mes);
-    return res.redirect("/");
-    //hàm gửi mail về cho nhà trường
-    //sendmail()
-    
-    
-}
-
-let handSpinWheel = (req, res)=>{
-    let response = {
-        "text" : `Chúc mừng bạn đã trúng 1 phần thưởng: ${req.body.display_value_spin}`
-    };
-    callSendAPI(req.body.psid, response);
-    return res.redirect("/");
-}
-
-module.exports = {
-    getHomepage: getHomepage,
-    getWebhook: getWebhook,
-    postWebhook: postWebhook,
-    getWebViewPage: getWebViewPage,
-    handleWebView: handleWebView,
-    getSpinWheel: getSpinWheel,
-    handSpinWheel: handSpinWheel
-};
