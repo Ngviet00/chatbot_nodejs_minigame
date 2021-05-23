@@ -10,7 +10,8 @@ let getWebViewPage = (req, res) => {
 
 let getSpinWheel = async (req, res) => {
     try {
-        var myDoc = await User.findOne({ psid: req.body.psid, checkPrize: 0 }).count() > 0;
+        let getPsid = await req.body.psid;
+        var myDoc = await User.findOne({ psid: getPsid, checkPrize: 0 }).count() > 0;
         return res.render("spinwheel.ejs", { myDoc: myDoc });
     } catch (err) {
         console.log(err);
@@ -68,10 +69,10 @@ let handSpinWheel = async (req, res) => {
         "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
     };
     callSendAPI(req.body.psid, response);
-
+    let getPsid = await req.body.psid;
     await User.update(
-        { "psid": req.body.psid },
-        { $set: { "prize": req.body.display_value_spin, "checkPrize": 1 } });
+        { psid: getPsid },
+        { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
     console.log("Update success");
     return res.redirect("/");
 }
