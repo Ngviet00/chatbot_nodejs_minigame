@@ -8,6 +8,7 @@ var getPsid = null;
 let getSpinWheel = async (req, res) => {
     try {
         var myDoc = await User.findOne({ psid: getPsid, checkPrize: 0 }).count() > 0;
+        console.log("gia tri cua psid là:" + req.body.psid);
         console.log(myDoc);
         return res.render("spinwheel.ejs", { myDoc: myDoc });
     } catch (err) {
@@ -32,7 +33,6 @@ let getWebViewRegister = (req, res) => {
 }
 
 let postWebViewRegister = (req, res) => {
-
     try {
         let response = {
             "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
@@ -109,7 +109,6 @@ let getWebhook = (req, res) => {
     }
 };
 
-// rất cần thiết
 let postWebhook = (req, res) => {
     // Parse the request body from the POST
     let body = req.body;
