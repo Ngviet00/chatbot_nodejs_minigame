@@ -3,6 +3,7 @@ import request from "request";
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 var User = require('./../DB/User');
+var getPsid = null;
 
 let getWebViewPage = (req, res) => {
     return res.render("register.ejs");
@@ -10,7 +11,7 @@ let getWebViewPage = (req, res) => {
 
 let getSpinWheel = async (req, res) => {
     try {
-        var myDoc = await User.findOne({ psid: req.body.psid }).count() > 0;
+        var myDoc = await User.findOne({ psid: getPsid }).count() > 0;
         console.log(myDoc);
         return res.render("spinwheel.ejs", { myDoc: myDoc });
     } catch (err) {
@@ -19,8 +20,10 @@ let getSpinWheel = async (req, res) => {
 }
 
 let handleWebView = (req, res) => {
+
     try {
         var newUser = new User();
+        getPsid = req.body.psid;
         newUser.psid = req.body.psid;
         newUser.name = req.body.name;
         newUser.number = req.body.number;
