@@ -11,7 +11,7 @@ let getWebViewPage = (req, res) => {
 
 let getSpinWheel = async (req, res) => {
     try {
-        var myDoc = await User.findOne({ psid: getPsid }).count() > 0;
+        var myDoc = await User.findOne({ psid: getPsid, checkPrize: 0 }).count() > 0;
         console.log(myDoc);
         return res.render("spinwheel.ejs", { myDoc: myDoc });
     } catch (err) {
