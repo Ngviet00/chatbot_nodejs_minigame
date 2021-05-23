@@ -5,10 +5,6 @@ const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 var User = require('./../DB/User');
 var getPsid = null;
 
-let getWebViewPage = (req, res) => {
-    return res.render("register.ejs");
-}
-
 let getSpinWheel = async (req, res) => {
     try {
         var myDoc = await User.findOne({ psid: getPsid, checkPrize: 0 }).count() > 0;
@@ -19,7 +15,7 @@ let getSpinWheel = async (req, res) => {
     }
 }
 
-let handSpinWheel = async (req, res) => {
+let postSpinWheel = async (req, res) => {
     let response = {
         "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
     };
@@ -31,7 +27,11 @@ let handSpinWheel = async (req, res) => {
     return res.redirect("/");
 }
 
-let handleWebView = (req, res) => {
+let getWebViewRegister = (req, res) => {
+    return res.render("register.ejs");
+}
+
+let postWebViewRegister = (req, res) => {
 
     try {
         var newUser = new User();
@@ -173,8 +173,8 @@ module.exports = {
     getHomepage: getHomepage,
     getWebhook: getWebhook,
     postWebhook: postWebhook,
-    getWebViewPage: getWebViewPage,
-    handleWebView: handleWebView,
+    getWebViewRegister: getWebViewRegister,
+    postWebViewRegister: postWebViewRegister,
     getSpinWheel: getSpinWheel,
-    handSpinWheel: handSpinWheel
+    postSpinWheel: postSpinWheel
 };

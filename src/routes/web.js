@@ -9,11 +9,11 @@ let initWebRoutes = (app) => {
     router.get("/webhooks/facebook/webhook", homepageController.getWebhook);
     router.post("/webhooks/facebook/webhook", homepageController.postWebhook);
 
-    router.get("/webview", homepageController.getWebViewPage);
-    router.post("/set-up-webview", homepageController.handleWebView);
+    router.get("/register", homepageController.getWebViewRegister);
+    router.post("/set-up-register", homepageController.postWebViewRegister);
 
     router.get("/spin", homepageController.getSpinWheel);
-    router.post("/set-up-spin", homepageController.handSpinWheel);
+    router.post("/set-up-spin", homepageController.postSpinWheel);
 
     return app.use("/", router);
 };
