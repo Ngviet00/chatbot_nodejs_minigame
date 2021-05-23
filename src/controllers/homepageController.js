@@ -49,8 +49,7 @@ let handleWebView = (req, res) => {
             if (err) { console.log(err) }
         })
         let response = {
-            "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!
-                      Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+            "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
         };
         let prize = {
             "attachment": {
