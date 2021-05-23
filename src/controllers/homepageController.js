@@ -10,15 +10,14 @@ let getWebViewPage = (req, res) => {
 
 let getSpinWheel = async (req, res) => {
     try {
-        let getPsid = await req.body.psid;
-        var myDoc = await User.findOne({ psid: getPsid, checkPrize: 0 }).count() > 0;
+        var myDoc = await User.findOne({ psid: req.body.psid, checkPrize: 0 }).count() > 0;
         return res.render("spinwheel.ejs", { myDoc: myDoc });
     } catch (err) {
         console.log(err);
     }
 }
 
-let handleWebView = async (req, res) => {
+let handleWebView = (req, res) => {
     try {
         var newUser = new User();
         newUser.psid = req.body.psid;
@@ -30,7 +29,7 @@ let handleWebView = async (req, res) => {
         newUser.address = req.body.address;
         newUser.prize = "";
         newUser.checkPrize = 0
-        await newUser.save().then(function (err) {
+        newUser.save().then(function (err) {
             if (err) { console.log(err) }
         })
         let response = {
@@ -64,14 +63,13 @@ let handleWebView = async (req, res) => {
     }
 }
 
-let handSpinWheel = async (req, res) => {
+let handSpinWheel = (req, res) => {
     let response = {
         "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
     };
     callSendAPI(req.body.psid, response);
-    let getPsid = await req.body.psid;
-    await User.update(
-        { psid: getPsid },
+    User.update(
+        { psid: req.body.psid },
         { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
     console.log("Update success");
     return res.redirect("/");
