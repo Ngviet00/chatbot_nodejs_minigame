@@ -19,6 +19,18 @@ let getSpinWheel = async (req, res) => {
     }
 }
 
+let handSpinWheel = async (req, res) => {
+    let response = {
+        "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+    };
+    callSendAPI(req.body.psid, response);
+    console.log('updating...');
+    await User.update(
+        { psid: getPsid },
+        { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
+    return res.redirect("/");
+}
+
 let handleWebView = (req, res) => {
 
     try {
@@ -65,19 +77,6 @@ let handleWebView = (req, res) => {
     } catch (err) {
         console.log(err);
     }
-}
-
-let handSpinWheel = (req, res) => {
-    let response = {
-        "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
-    };
-    callSendAPI(req.body.psid, response);
-    console.log('updating...');
-    User.update(
-        { psid: getPsid },
-        { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
-    return res.redirect("/");
-
 }
 
 let getHomepage = (req, res) => {
