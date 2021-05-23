@@ -34,20 +34,6 @@ let getWebViewRegister = (req, res) => {
 let postWebViewRegister = (req, res) => {
 
     try {
-        var newUser = new User();
-        getPsid = req.body.psid;
-        newUser.psid = req.body.psid;
-        newUser.name = req.body.name;
-        newUser.number = req.body.number;
-        newUser.email = req.body.email;
-        newUser.txtDate = req.body.txtDate;
-        newUser.major = req.body.major;
-        newUser.address = req.body.address;
-        newUser.prize = "";
-        newUser.checkPrize = 0
-        newUser.save().then(function (err) {
-            if (err) { console.log(err) }
-        })
         let response = {
             "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
         };
@@ -71,6 +57,20 @@ let postWebViewRegister = (req, res) => {
         }
         callSendAPI(req.body.psid, response);
         callSendAPI(req.body.psid, prize);
+        var newUser = new User();
+        getPsid = req.body.psid;
+        newUser.psid = req.body.psid;
+        newUser.name = req.body.name;
+        newUser.number = req.body.number;
+        newUser.email = req.body.email;
+        newUser.txtDate = req.body.txtDate;
+        newUser.major = req.body.major;
+        newUser.address = req.body.address;
+        newUser.prize = "";
+        newUser.checkPrize = 0
+        newUser.save().then(function (err) {
+            if (err) { console.log(err) }
+        })
         return res.redirect("/webview");
 
     } catch (err) {
