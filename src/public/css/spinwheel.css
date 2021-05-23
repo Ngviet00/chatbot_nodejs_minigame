@@ -54,7 +54,7 @@ table.power {
   padding: 10px;
   background-color: white;
   position: absolute;
-  top: 7em;
+  top: 6em;
   z-index: 999;
   left: 3.5em;
   border-radius: 15px;
@@ -64,7 +64,7 @@ table.power {
 .form-container input[type="password"] {
   width: 100%;
   padding: 15px;
-  margin: 5px 0 22px 0;
+  margin: 5px 0 10px 0;
   border: none;
   background: #f1f1f1;
 }

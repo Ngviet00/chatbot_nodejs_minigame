@@ -50,14 +50,14 @@ let handleWebView = (req, res) => {
         })
         let response = {
             "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!
-                      \nChúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+                      Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
         };
         let prize = {
             "attachment": {
                 "type": "template",
                 "payload": {
                     "template_type": "button",
-                    "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng,Tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
+                    "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng, tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
                     "buttons": [
                         {
                             "type": "web_url",
