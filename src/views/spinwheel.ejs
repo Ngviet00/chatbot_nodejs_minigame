@@ -11,7 +11,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   </head>
   <body>
-    <% if (getPrize.prize !== "") { %>
+    <% if(!myDoc) { %>
     <h1>Bạn đã hết lượt quay thưởng</h1>
     <canvas
       style="display: none"

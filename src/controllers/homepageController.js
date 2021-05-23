@@ -10,13 +10,8 @@ let getWebViewPage = (req, res) => {
 
 let getSpinWheel = async (req, res) => {
     try {
-        var myDoc = await User.findOne({ psid: req.body.psid }).count() > 0;
-        if (myDoc) {
-            var getPrize = await User.findOne({ psid: req.body.psid }, { prize: 1, _id: 0 });
-            return res.render("spinwheel.ejs", { getPrize: getPrize });
-        } else {
-            return res.render("spinwheel.ejs", { check: true });
-        }
+        var myDoc = await User.findOne({ psid: req.body.psid, checkPrize: 0 }).count() > 0;
+        return res.render("spinwheel.ejs", { myDoc: myDoc });
     } catch (err) {
         console.log(err);
     }
@@ -33,6 +28,7 @@ let handleWebView = async (req, res) => {
         newUser.major = req.body.major;
         newUser.address = req.body.address;
         newUser.prize = "";
+        newUser.checkPrize = 0
         await newUser.save().then(function (err) {
             if (err) { console.log(err) }
         })
@@ -60,7 +56,7 @@ let handleWebView = async (req, res) => {
         }
         callSendAPI(req.body.psid, response);
         callSendAPI(req.body.psid, prize);
-        return res.redirect("/");
+        return res.redirect("/webview");
 
     } catch (err) {
         console.log(err);
@@ -75,7 +71,7 @@ let handSpinWheel = async (req, res) => {
 
     await User.update(
         { "psid": req.body.psid },
-        { $set: { "prize": req.body.display_value_spin } });
+        { $set: { "prize": req.body.display_value_spin, "checkPrize": 1 } });
     console.log("Update success");
     return res.redirect("/");
 }
@@ -137,7 +133,6 @@ let postWebhook = (req, res) => {
             } else if (webhook_event.postback) {
                 handlePostback(sender_psid, webhook_event.postback);
             }
-
         });
 
         // Return a '200 OK' response to all events

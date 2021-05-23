@@ -24,6 +24,9 @@ var user = new mongoose.Schema({
   },
   prize: {
     type: String
+  },
+  checkPrize: {
+    type: String
   }
 });
 module.exports = mongoose.model('user', user);
