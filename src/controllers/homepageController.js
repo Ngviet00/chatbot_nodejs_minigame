@@ -23,7 +23,7 @@ let handSpinWheel = async (req, res) => {
     let response = {
         "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
     };
-    callSendAPI(req.body.psid, response);
+    await callSendAPI(req.body.psid, response);
     console.log('updating...');
     await User.update(
         { psid: getPsid },
