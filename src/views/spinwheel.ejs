@@ -10,7 +10,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   </head>
   <body>
-    <div id="expire_prize">
+    <!-- <div id="expire_prize">
       <h2 style="font-size: 28px !important">Bạn đã hết lượt quay thưởng</h2>
       <canvas
         style="display: none"
@@ -22,8 +22,8 @@
         data-responsiveScaleHeight="true"
       >
       </canvas>
-    </div>
-    <div id="spin" align="center" style="position: relative; display: none">
+    </div> -->
+    <div id="spin" align="center" style="position: relative">
       <form
         action="/set-up-spin"
         method="POST"
@@ -52,7 +52,7 @@
               class="power_controls"
               style="text-align: center; margin-top: 2em"
             >
-              <button id="btn_play" onClick="startSpin();">PLAY</button>
+              <button id="btn_play">PLAY</button>
             </div>
           </td>
           <td
@@ -92,12 +92,12 @@
     </div>
 
     <script type="text/javascript">
-      var thiep = "5391060734297620";
+      /*var thiep = "5391060734297620";
       ("<% for(var i=0; i < myDoc.length; i++) { %>");
       if (thiep == "<%= myDoc[i].psid %>") {
         console.log("ok duoc roi");
       }
-      ("<% } %>");
+      ("<% } %>");*/
     </script>
 
     <script>
@@ -136,16 +136,14 @@
       secondImg.src = "cb.png";
 
       let wheelSpinning = false;
-
-      function startSpin() {
+      /*function startSpin() {
         if (wheelSpinning == false) {
-          //
           calculatePrize();
           theWheel.animation.spins = 8;
           theWheel.startAnimation();
           wheelSpinning = true;
         }
-      }
+      }*/
 
       let audio = new Audio("tick.mp3");
       function playSound() {
@@ -196,8 +194,20 @@
             if (thread_context.psid == "<%= myDoc[i].psid %>") {
               document.getElementById("psid").value = thread_context.psid;
 
-              document.getElementById("expire_prize").style.display = "none";
-              document.getElementById("spin").style.display = "block";
+              document
+                .getElementById("btn_play")
+                .addEventListener("click", function (event) {
+                  if (wheelSpinning == false) {
+                    calculatePrize();
+                    theWheel.animation.spins = 8;
+                    theWheel.startAnimation();
+                    wheelSpinning = true;
+                  }
+                });
+            } else {
+              var btn_play_spin = document.getElementById("btn_play");
+              btn_play_spin.innerHTML = "Bạn đã hết lượt quay thưởng";
+              btn_play_spin.style.cursor = "not-allowed	";
             }
             ("<% } %>");
           },
