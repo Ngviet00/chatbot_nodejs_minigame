@@ -175,6 +175,21 @@
           "208033644177404",
           function success(thread_context) {
             document.getElementById("psid").value = thread_context.psid;
+
+            var get_psid = thread_context.psid;
+
+            ("<% for(var i=0; i < myDoc.length; i++) { %>");
+            if (get_psid == "<%= myDoc[i].psid %>") {
+              document
+                .getElementById("btn_play")
+                .addEventListener("click", startSpin);
+            } else {
+              document.getElementById("btn_play").innerText =
+                "Bạn đã hết lượt quay thưởng rồi";
+              document.getElementById("btn_play").style.cursor = "not-allowed";
+            }
+
+            ("<% } %>");
           },
           function error(err) {
             console.log(err);
@@ -192,18 +207,19 @@
         );
       }
 
-      var get_psid = document.getElementById("psid").value;
+      /*var get_psid = document.getElementById("psid").value;
       ("<% for(var i=0; i < myDoc.length; i++) { %>");
       if (get_psid == "<%= myDoc[i].psid %>") {
-        document.getElementById("btn_play").addEventListener("click", startSpin);
+        document
+          .getElementById("btn_play")
+          .addEventListener("click", startSpin);
       } else {
         document.getElementById("btn_play").innerText =
           "Bạn đã hết lượt quay thưởng rồi";
         document.getElementById("btn_play").style.cursor = "not-allowed";
       }
 
-      ("<% } %>");
+      ("<% } %>");*/
     </script>
-
   </body>
 </html>
