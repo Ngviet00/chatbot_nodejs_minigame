@@ -190,23 +190,20 @@
         MessengerExtensions.getContext(
           "208033644177404",
           function success(thread_context) {
-            ("<% for(var i=0; i < myDoc.length; i++) { %>");
-            if (
-              thread_context.psid == "<%= myDoc[i].psid %>" &&
-              "<%= myDoc[i].checkPrize %>" == 0
-            ) {
-              document.getElementById("psid").value = thread_context.psid;
-
-              /*document
+            var abc = thread_context.psid;
+            console.log("abc");
+            /*("<% for(var i=0; i < myDoc.length; i++) { %>");
+            if (thread_context.psid == "<%= myDoc[i].psid %>") {
+              document
                 .getElementById("btn_play")
                 .addEventListener("click", function (event) {
                   startSpin();
-                });*/
+                });
               console.log("dang o phan true ..............");
             } else {
               document.getElementById("btn_play").innerText =
                 "Bạn đã hết lượt quay thưởng";
-            }
+            }*/
             ("<% } %>");
           },
           function error(err) {
