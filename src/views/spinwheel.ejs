@@ -176,13 +176,11 @@
           function success(thread_context) {
             document.getElementById("psid").value = thread_context.psid;
 
-            var get_psid = thread_context.psid;
+            //var get_psid = thread_context.psid;
 
             ("<% for(var i=0; i < myDoc.length; i++) { %>");
-            if (get_psid == "<%= myDoc[i].psid %>") {
-              document
-                .getElementById("btn_play")
-                .addEventListener("click", startSpin);
+            if (thread_context.psid == "<%= myDoc[i].psid %>") {
+              document.getElementById("btn_play").style.backgroundColor = "red";
             } else {
               document.getElementById("btn_play").innerText =
                 "Bạn đã hết lượt quay thưởng rồi";
