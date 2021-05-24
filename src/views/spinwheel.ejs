@@ -52,7 +52,7 @@
               class="power_controls"
               style="text-align: center; margin-top: 2em"
             >
-              <button id="btn_play">PLAY</button>
+              <button id="btn_play" onclick="startSpin();">PLAY</button>
             </div>
           </td>
           <td
@@ -138,6 +138,19 @@
       var wheelSpinning = false;
       function startSpin() {
         if (wheelSpinning == false) {
+          window.extAsyncInit = function () {
+            MessengerExtensions.getContext(
+              "208033644177404",
+              function success(thread_context) {
+                document.getElementById("psid").value = thread_context.psid;
+                alert(thread_context.psid);
+              },
+              function error(err) {
+                console.log(err);
+              }
+            );
+          };
+
           calculatePrize();
           theWheel.animation.spins = 8;
           theWheel.startAnimation();
@@ -190,21 +203,7 @@
         MessengerExtensions.getContext(
           "208033644177404",
           function success(thread_context) {
-            var abc = thread_context.psid;
-            console.log("abc");
-            /*("<% for(var i=0; i < myDoc.length; i++) { %>");
-            if (thread_context.psid == "<%= myDoc[i].psid %>") {
-              document
-                .getElementById("btn_play")
-                .addEventListener("click", function (event) {
-                  startSpin();
-                });
-              console.log("dang o phan true ..............");
-            } else {
-              document.getElementById("btn_play").innerText =
-                "Bạn đã hết lượt quay thưởng";
-            }*/
-            ("<% } %>");
+            document.getElementById("psid").value = thread_context.psid;
           },
           function error(err) {
             console.log(err);
