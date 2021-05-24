@@ -136,14 +136,14 @@
       secondImg.src = "cb.png";
 
       let wheelSpinning = false;
-      /*function startSpin() {
+      function startSpin() {
         if (wheelSpinning == false) {
           calculatePrize();
           theWheel.animation.spins = 8;
           theWheel.startAnimation();
           wheelSpinning = true;
         }
-      }*/
+      }
 
       let audio = new Audio("tick.mp3");
       function playSound() {
@@ -193,24 +193,21 @@
             ("<% for(var i=0; i < myDoc.length; i++) { %>");
             if (
               thread_context.psid == "<%= myDoc[i].psid %>" &&
-              "<%= myDoc[i].checkPrize %>" === "0"
+              "<%= myDoc[i].checkPrize %>" == 0
             ) {
               document.getElementById("psid").value = thread_context.psid;
 
               document
                 .getElementById("btn_play")
                 .addEventListener("click", function (event) {
-                  if (wheelSpinning == false) {
-                    calculatePrize();
-                    theWheel.animation.spins = 8;
-                    theWheel.startAnimation();
-                    wheelSpinning = true;
-                  }
+                  startSpin();
                 });
+              console.log("dang o phan true ..............");
             } else {
               document.getElementById("btn_play").innerHTML =
                 "Bạn đã hết lượt quay thưởng";
               document.getElementById("btn_play").style.cursor = "not-allowed";
+              console.log("dang o phan false nay..........");
             }
             ("<% } %>");
           },
