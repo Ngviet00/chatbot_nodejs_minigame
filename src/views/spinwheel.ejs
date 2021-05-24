@@ -135,7 +135,7 @@
       };
       secondImg.src = "cb.png";
 
-      let wheelSpinning = false;
+      var wheelSpinning = false;
       function startSpin() {
         if (wheelSpinning == false) {
           calculatePrize();
@@ -197,17 +197,15 @@
             ) {
               document.getElementById("psid").value = thread_context.psid;
 
-              document
+              /*document
                 .getElementById("btn_play")
                 .addEventListener("click", function (event) {
                   startSpin();
-                });
+                });*/
               console.log("dang o phan true ..............");
             } else {
-              document.getElementById("btn_play").innerHTML =
+              document.getElementById("btn_play").innerText =
                 "Bạn đã hết lượt quay thưởng";
-              document.getElementById("btn_play").style.cursor = "not-allowed";
-              console.log("dang o phan false nay..........");
             }
             ("<% } %>");
           },
