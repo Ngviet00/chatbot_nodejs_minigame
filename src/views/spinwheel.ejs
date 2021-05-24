@@ -10,20 +10,20 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   </head>
   <body>
-    <% if(!myDoc) { %>
-    <h2 style="font-size: 28px !important">Bạn đã hết lượt quay thưởng</h2>
-    <canvas
-      style="display: none"
-      id="canvas"
-      style="z-index: 1"
-      width="426"
-      height="434"
-      data-responsiveMinWidth="180"
-      data-responsiveScaleHeight="true"
-    >
-    </canvas>
-    <% }else { %>
-    <div id="spin" align="center" style="position: relative">
+    <div id="expire_prize">
+      <h2 style="font-size: 28px !important">Bạn đã hết lượt quay thưởng</h2>
+      <canvas
+        style="display: none"
+        id="canvas"
+        style="z-index: 1"
+        width="426"
+        height="434"
+        data-responsiveMinWidth="180"
+        data-responsiveScaleHeight="true"
+      >
+      </canvas>
+    </div>
+    <div id="spin" align="center" style="position: relative; display: none">
       <form
         action="/set-up-spin"
         method="POST"
@@ -90,7 +90,15 @@
         </tr>
       </table>
     </div>
-    <% } %>
+
+    <script type="text/javascript">
+      var thiep = "5391060734297620";
+      ("<% for(var i=0; i < myDoc.length; i++) { %>");
+      if (thiep == "<%= myDoc[i].psid %>") {
+        console.log("ok duoc roi");
+      }
+      ("<% } %>");
+    </script>
 
     <script>
       let theWheel = new Winwheel({
@@ -128,8 +136,10 @@
       secondImg.src = "cb.png";
 
       let wheelSpinning = false;
+
       function startSpin() {
         if (wheelSpinning == false) {
+          //
           calculatePrize();
           theWheel.animation.spins = 8;
           theWheel.startAnimation();
@@ -182,7 +192,14 @@
         MessengerExtensions.getContext(
           "208033644177404",
           function success(thread_context) {
-            document.getElementById("psid").value = thread_context.psid;
+            ("<% for(var i=0; i < myDoc.length; i++) { %>");
+            if (thread_context.psid == "<%= myDoc[i].psid %>") {
+              document.getElementById("psid").value = thread_context.psid;
+
+              document.getElementById("expire_prize").style.display = "none";
+              document.getElementById("spin").style.display = "block";
+            }
+            ("<% } %>");
           },
           function error(err) {
             console.log(err);

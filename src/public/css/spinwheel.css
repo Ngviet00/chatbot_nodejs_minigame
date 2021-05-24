@@ -28,6 +28,7 @@ table.power {
 }
 
 #btn_play {
+  margin-top: 25px;
   width: 120px;
   padding: 5px;
   height: 40px;

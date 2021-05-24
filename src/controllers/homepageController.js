@@ -3,13 +3,10 @@ import request from "request";
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 var User = require('./../DB/User');
-var getPsid = null;
 
 let getSpinWheel = async (req, res) => {
     try {
-        var myDoc = await User.findOne({ psid: getPsid, checkPrize: 0 }).count() > 0;
-        console.log("gia tri cua psid là:" + req.body.psid);
-        console.log(myDoc);
+        var myDoc = await User.find({ checkPrize: 0 });
         return res.render("spinwheel.ejs", { myDoc: myDoc });
     } catch (err) {
         console.log(err);
@@ -20,11 +17,11 @@ let postSpinWheel = async (req, res) => {
     let response = {
         "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
     };
-    await callSendAPI(req.body.psid, response);
-    console.log('updating...');
+    callSendAPI(req.body.psid, response);
     await User.update(
-        { psid: getPsid },
+        { psid: req.body.psid },
         { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
+    console.log('updated');
     return res.redirect("/");
 }
 
@@ -58,7 +55,6 @@ let postWebViewRegister = (req, res) => {
         callSendAPI(req.body.psid, response);
         callSendAPI(req.body.psid, prize);
         var newUser = new User();
-        getPsid = req.body.psid;
         newUser.psid = req.body.psid;
         newUser.name = req.body.name;
         newUser.number = req.body.number;
@@ -70,8 +66,11 @@ let postWebViewRegister = (req, res) => {
         newUser.checkPrize = 0
         newUser.save().then(function (err) {
             if (err) { console.log(err) }
+            else {
+                console.log("them thanh cong");
+            }
         })
-        return res.redirect("/webview");
+        return res.redirect("/");
 
     } catch (err) {
         console.log(err);
