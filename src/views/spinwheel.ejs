@@ -191,7 +191,10 @@
           "208033644177404",
           function success(thread_context) {
             ("<% for(var i=0; i < myDoc.length; i++) { %>");
-            if (thread_context.psid == "<%= myDoc[i].psid %>") {
+            if (
+              thread_context.psid == "<%= myDoc[i].psid %>" &&
+              "<%= myDoc[i].checkPrize %>" === "0"
+            ) {
               document.getElementById("psid").value = thread_context.psid;
 
               document
@@ -205,9 +208,9 @@
                   }
                 });
             } else {
-              var btn_play_spin = document.getElementById("btn_play");
-              btn_play_spin.innerHTML = "Bạn đã hết lượt quay thưởng";
-              btn_play_spin.style.cursor = "not-allowed	";
+              document.getElementById("btn_play").innerHTML =
+                "Bạn đã hết lượt quay thưởng";
+              document.getElementById("btn_play").style.cursor = "not-allowed";
             }
             ("<% } %>");
           },
