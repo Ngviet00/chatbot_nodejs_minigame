@@ -35,10 +35,10 @@ table.power {
   font-size: 20px;
   border: none;
   outline: none;
-  background-color: blue;
+  background-color: red;
   color: white;
   border-radius: 8px;
-  cursor: pointer;
+  cursor: not-allowed;
 }
 
 .form-popup {

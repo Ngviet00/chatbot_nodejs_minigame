@@ -52,7 +52,7 @@
               class="power_controls"
               style="text-align: center; margin-top: 2em"
             >
-              <button id="btn_play">PLAY</button>
+              <button id="btn_play">Bạn không có quay thưởng</button>
             </div>
           </td>
           <td
@@ -180,13 +180,12 @@
 
             ("<% for(var i=0; i < myDoc.length; i++) { %>");
             if (thread_context.psid == "<%= myDoc[i].psid %>") {
-              document.getElementById("btn_play").style.backgroundColor = "red";
-            } else {
-              document.getElementById("btn_play").innerText =
-                "Bạn đã hết lượt quay thưởng rồi";
-              document.getElementById("btn_play").style.cursor = "not-allowed";
+              var get_btn_play_spin = document.getElementById("btn_play");
+              get_btn_play_spin.innerText = "Play";
+              get_btn_play_spin.style.backgroundColor = "blue";
+              get_btn_play_spin.addEventListener("click", startSpin);
+              get_btn_play_spin.style.cursor = "pointer";
             }
-
             ("<% } %>");
           },
           function error(err) {
