@@ -10,7 +10,7 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   </head>
   <body>
-    <!-- <div id="expire_prize">
+    <div id="expire_prize" style="display: none">
       <h2 style="font-size: 28px !important">Bạn đã hết lượt quay thưởng</h2>
       <canvas
         style="display: none"
@@ -22,7 +22,7 @@
         data-responsiveScaleHeight="true"
       >
       </canvas>
-    </div> -->
+    </div>
     <div id="spin" align="center" style="position: relative">
       <form
         action="/set-up-spin"
@@ -137,25 +137,20 @@
 
       let wheelSpinning = false;
       function startSpin() {
-        if (wheelSpinning == false) {
-          window.extAsyncInit = function () {
-            MessengerExtensions.getContext(
-              "208033644177404",
-              function success(thread_context) {
-                document.getElementById("psid").value = thread_context.psid;
-                console.log(thread_context.psid);
-              },
-              function error(err) {
-                console.log(err);
-              }
-            );
-          };
-
-          calculatePrize();
-          theWheel.animation.spins = 8;
-          theWheel.startAnimation();
-          wheelSpinning = true;
+        var get_psid = document.getElementById("psid").value;
+        ("<% for(var i=0; i < myDoc.length; i++) { %>");
+        if (get_psid == "<%= myDoc[i].psid %>") {
+          if (wheelSpinning == false) {
+            calculatePrize();
+            theWheel.animation.spins = 8;
+            theWheel.startAnimation();
+            wheelSpinning = true;
+          }
+        } else {
+          document.getElementById("spin").style.display = "none";
+          document.getElementById("expire_prize").style.display = "block";
         }
+        ("<% } %>");
       }
 
       let audio = new Audio("tick.mp3");
