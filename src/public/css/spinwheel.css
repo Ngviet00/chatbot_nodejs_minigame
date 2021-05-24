@@ -29,12 +29,13 @@ table.power {
 
 #btn_play {
   margin-top: 25px;
-  width: 120px;
+  min-width: 5em;
   padding: 5px;
   height: 40px;
   font-size: 20px;
   border: none;
-  background-color: green;
+  outline: none;
+  background-color: blue;
   color: white;
   border-radius: 8px;
   cursor: pointer;
