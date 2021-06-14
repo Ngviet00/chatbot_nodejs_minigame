@@ -124,7 +124,6 @@ p {
 }
 canvas{
       display: block;
-      margin: 0px auto;
       z-index: 1
 }
 
