@@ -137,18 +137,19 @@
            function success(thread_context) {
              document.getElementById("psid").value = thread_context.psid;
              console.log(thread_context.psid);
-             "<%= myDoc %>".map((o)=> { 
+             document.getElementById("btn_play").style.display = "none";
+             /*"<%= myDoc %>".map((o)=> { 
                 console.log(o);
                if(o.psid == 123456789){
                   var get_btn_play_spin = document.getElementById("btn_play");
                   get_btn_play_spin.style.display = "none";
                   console.log(thread_context.psid)
-                  /*get_btn_play_spin.innerText = "Play";
+                  get_btn_play_spin.innerText = "Play";
                   get_btn_play_spin.style.backgroundColor = "blue";
                   get_btn_play_spin.addEventListener("click", startSpin);
-                  get_btn_play_spin.style.cursor = "pointer";*/
+                  get_btn_play_spin.style.cursor = "pointer";
                }
-            })
+            })*/
            },
            function error(err) {
              console.log(err);
