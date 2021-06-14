@@ -2,80 +2,52 @@
   <head>
     <title>Spinwheel</title>
     <link rel="stylesheet" href="css/spinwheel.css" type="text/css" />
-    <link
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    />
+    /> -->
     <script type="text/javascript" src="Winwheel.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   </head>
   <body>
     <div id="spin" align="center" style="position: relative">
-      <form
-        action="/set-up-spin"
-        method="POST"
-        id="verify"
-        class="form-container"
-      >
-        <input type="text" hidden name="psid" id="psid" />
-        <h3>Thông Báo</h3>
-        <p style="margin-bottom: 0">Chúc mừng bạn đã trúng 1 phần thưởng:</p>
-        <input
-          readonly
-          id="display_value_spin"
-          type="text"
-          name="display_value_spin"
-          value=""
-        />
-        <button type="submit" class="btn" onclick="handleSaveBtn();">
-          Xác Nhận
-        </button>
-      </form>
+      <div class="wrapper">
+         <h1>Quay Thưởng</h1>
+         <div class="wrapper_spin">
+            <form
+               action="/set-up-spin"
+               method="POST"
+               id="verify"
+               class="form-container">
+                  <input type="text" hidden name="psid" id="psid" />
+                  <h3>Thông Báo</h3>
+                  <p style="margin-bottom: 0">Chúc mừng bạn đã trúng 1 phần thưởng:</p>
+                  <input
+                     readonly
+                     id="display_value_spin"
+                     type="text"
+                     name="display_value_spin"
+                     value=""
+                  />
+                  <button type="submit" class="btn" onclick="handleSaveBtn();">
+                     Xác Nhận
+                  </button>
+            </form>
 
-      <table cellpadding="0" cellspacing="0" border="0">
-        <tr style="display: flex; flex-direction: column-reverse">
-          <td>
-            <div
-              class="power_controls"
-              style="text-align: center; margin-top: 2em"
-            >
-              <button id="btn_play">Bạn không có lượt quay thưởng</button>
-            </div>
-          </td>
-          <td
-            width="426"
-            height="380"
-            class="the_wheel"
-            align="center"
-            valign="center"
-          >
-            <div style="position: relative">
-              <canvas
-                id="canvas"
-                style="z-index: 1"
-                width="426"
-                height="434"
-                data-responsiveMinWidth="180"
-                data-responsiveScaleHeight="true"
-              >
-              </canvas>
-              <div
-                class="triangle-down"
-                style="
-                  position: absolute;
-                  top: -50px;
-                  right: 55%;
-                  z-index: 9;
-                  width: 0;
-                  height: 0;
-                "
-              >
-                <img style="z-index: 11111" src="basic_pointer.png" alt="" />
-              </div>
-            </div>
-          </td>
-        </tr>
-      </table>
+            <img style="z-index: 11111" src="basic_pointer.png" alt="" />
+            <canvas 
+               id="canvas"
+               width="426"
+               height="434"
+               data-responsiveMinWidth="426"
+               data-responsiveScaleHeight="true">
+            </canvas>
+            <button id="btn_play" onclick="startSpin()">
+               Play
+            </button>   
+         </div>
+      </div>
     </div>
 
     <script>
@@ -88,14 +60,15 @@
         numSegments: 6,
         outerRadius: 212,
         textFontSize: 16,
-        responsive: true,
+        textFontFamily:'Courier',
+        'textFontWeight' : 'bold',
         segments: [
           { text: "MacBook Pro 2020" },
           { text: "Học\n\n Bổng\n\n 500.000đ" },
           { text: "Học\n\n Bổng\n\n 2 Triệu" },
           { text: "Học\n\n Bổng\n\n 1 Triệu" },
           { text: "Google Pixel 5Xl" },
-          { text: "Iphone 12 PRM" },
+          { text: "Iphone 12PRM" },
         ],
         animation: {
           type: "spinToStop",
@@ -158,26 +131,16 @@
       })(document, "script", "Messenger");
 
       window.extAsyncInit = function () {
-        MessengerExtensions.getContext(
-          "208033644177404",
-          function success(thread_context) {
-            document.getElementById("psid").value = thread_context.psid;
-
-            ("<% for(var i=0; i < myDoc.length; i++) { %>");
-            if (thread_context.psid == "<%= myDoc[i].psid %>") {
-              var get_btn_play_spin = document.getElementById("btn_play");
-              get_btn_play_spin.innerText = "Play";
-              get_btn_play_spin.style.backgroundColor = "blue";
-              get_btn_play_spin.addEventListener("click", startSpin);
-              get_btn_play_spin.style.cursor = "pointer";
-            }
-            ("<% } %>");
-          },
-          function error(err) {
-            console.log(err);
-          }
-        );
-      };
+         MessengerExtensions.getContext(
+           "208033644177404",
+           function success(thread_context) {
+             /*document.getElementById("psid").value = thread_context.psid;*/
+           },
+           function error(err) {
+             console.log(err);
+           }
+         );
+       };
 
       function handleSaveBtn() {
         document.getElementById("verify").style.display = "none";
