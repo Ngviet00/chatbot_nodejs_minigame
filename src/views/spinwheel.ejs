@@ -13,7 +13,6 @@
   <body>
     <div id="spin" align="center" style="position: relative">
       <div class="wrapper">
-         <!-- <h1>Quay Thưởng</h1> -->
          <div class="wrapper_spin">
             <form
                action="/set-up-spin"
@@ -93,13 +92,12 @@
 
       let wheelSpinning = false;
       function startSpin() {
-        /*if (wheelSpinning == false) {
+        if (wheelSpinning == false) {
           calculatePrize();
           theWheel.animation.spins = 8;
           theWheel.startAnimation();
           wheelSpinning = true;
-        }*/
-        alert("ok");
+        }
       }
 
       let audio = new Audio("tick.mp3");
@@ -136,11 +134,35 @@
         fjs.parentNode.insertBefore(js, fjs);
       })(document, "script", "Messenger");
 
-      window.extAsyncInit = function () {
+      /*window.extAsyncInit = function () {
          MessengerExtensions.getContext(
            "208033644177404",
            function success(thread_context) {
-             /*document.getElementById("psid").value = thread_context.psid;*/
+             document.getElementById("psid").value = thread_context.psid;
+
+             
+           },
+           function error(err) {
+             console.log(err);
+           }
+         );
+       };*/
+
+       window.extAsyncInit = function () {
+         MessengerExtensions.getContext(
+           "208033644177404",
+           function success(thread_context) {
+             document.getElementById("psid").value = thread_context.psid;
+ 
+             ("<% for(var i=0; i < myDoc.length; i++) { %>");
+             if (thread_context.psid == "<%= myDoc[i].psid %>") {
+               var get_btn_play_spin = document.getElementById("btn_play");
+               get_btn_play_spin.innerText = "Play";
+               get_btn_play_spin.style.backgroundColor = "blue";
+               get_btn_play_spin.addEventListener("click", startSpin);
+               get_btn_play_spin.style.cursor = "pointer";
+             }
+             ("<% } %>");
            },
            function error(err) {
              console.log(err);
