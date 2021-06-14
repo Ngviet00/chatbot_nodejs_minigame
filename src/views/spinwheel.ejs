@@ -139,7 +139,8 @@
            function success(thread_context) {
              document.getElementById("psid").value = thread_context.psid;
              ("<% for(var i=0; i < myDoc.length; i++) { %>");
-               if (thread_context.psid == "<%= myDoc[i].psid %>") {
+               if (  thread_context.psid == "<%= myDoc[i].psid %>" 
+                     && "<%= myDoc[i].checkPrize %>" == 0) {
                   var get_btn_play_spin = document.getElementById("btn_play");
                   get_btn_play_spin.style.backgroundColor = "blue";
                   get_btn_play_spin.innerText = "Play";
