@@ -5,23 +5,14 @@ const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 var User = require('./../DB/User');
 
 let getSpinWheel = (req, res) => {
-   var myDoc = null;
    User.find()
       .then((result) => {
-         myDoc = result;
-         console.log(typeof myDoc);
+         const myDoc = result;
+         return res.render("spinwheel.ejs", { myDoc: myDoc });
       })
       .catch((err) => { console.log(err) })
 
-   return res.render("spinwheel.ejs", { myDoc: myDoc });
-   // User.find().then((allUser) => {
-   //    return res.status(200).json({
-   //       success: true,
-   //       message: "list of user",
-   //       docs: allUser
-   //    })
-   // })
-
+   // return res.render("spinwheel.ejs", { myDoc: myDoc });
    // try {
    //    var myDoc = await User.find({ checkPrize: 0 });
    //    return res.render("spinwheel.ejs", { myDoc: myDoc });
