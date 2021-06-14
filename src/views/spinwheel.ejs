@@ -13,7 +13,7 @@
   <body>
     <div id="spin" align="center" style="position: relative">
       <div class="wrapper">
-         <h1>Quay Thưởng</h1>
+         <!-- <h1>Quay Thưởng</h1> -->
          <div class="wrapper_spin">
             <form
                action="/set-up-spin"
@@ -88,12 +88,13 @@
 
       let wheelSpinning = false;
       function startSpin() {
-        if (wheelSpinning == false) {
+        /*if (wheelSpinning == false) {
           calculatePrize();
           theWheel.animation.spins = 8;
           theWheel.startAnimation();
           wheelSpinning = true;
-        }
+        }*/
+        alert("ok");
       }
 
       let audio = new Audio("tick.mp3");
