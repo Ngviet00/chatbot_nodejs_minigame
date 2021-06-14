@@ -138,7 +138,7 @@
              document.getElementById("psid").value = thread_context.psid;
 
              "<%= myDoc %>".map((o)=> { 
-               if(o.psid == "123456789"){
+               if(o.psid === "123456789"){
                   var get_btn_play_spin = document.getElementById("btn_play");
                   get_btn_play_spin.innerText = "Play";
                   get_btn_play_spin.style.backgroundColor = "blue";
