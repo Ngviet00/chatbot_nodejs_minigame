@@ -51,9 +51,11 @@
 
     <script>
 
-      myDoc.map((o)=> { 
-         console.log(o);
-     });
+
+
+      console.log("<%= myDoc %>")
+
+      
 
       let theWheel = new Winwheel({
         drawMode: "image",
@@ -140,16 +142,6 @@
            //208033644177404 cua thiep ml
            function success(thread_context) {
              document.getElementById("psid").value = thread_context.psid;
- 
-             /*("<% for(var i=0; i < myDoc.length; i++) { %>");
-             if (thread_context.psid == "<%= myDoc[i].psid %>") {
-               var get_btn_play_spin = document.getElementById("btn_play");
-               get_btn_play_spin.innerText = "Play";
-               get_btn_play_spin.style.backgroundColor = "blue";
-               get_btn_play_spin.addEventListener("click", startSpin);
-               get_btn_play_spin.style.cursor = "pointer";
-             }
-             ("<% } %>");*/
            },
            function error(err) {
              console.log(err);
