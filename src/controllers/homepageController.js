@@ -9,7 +9,7 @@ let getSpinWheel = async (req, res) => {
    User.find()
       .then((result) => {
          myDoc = result;
-         console.log(myDoc);
+         console.log(typeof myDoc);
       })
       .catch((err) => { console.log(err) })
 
