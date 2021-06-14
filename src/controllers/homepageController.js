@@ -4,7 +4,7 @@ const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 var User = require('./../DB/User');
 
-let getSpinWheel = async (req, res) => {
+let getSpinWheel = (req, res) => {
    var myDoc = null;
    User.find()
       .then((result) => {
