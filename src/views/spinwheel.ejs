@@ -3,10 +3,10 @@
     <title>Spinwheel</title>
     <link rel="stylesheet" href="css/spinwheel.css" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <link
+    <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    /> -->
+    />
     <script type="text/javascript" src="Winwheel.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   </head>
@@ -43,7 +43,7 @@
                data-responsiveMinWidth="426"
                data-responsiveScaleHeight="true">
             </canvas>
-            <button id="btn_play" onclick="startSpin()">
+            <button id="btn_play">
                Play
             </button>   
          </div>
@@ -51,6 +51,11 @@
     </div>
 
     <script>
+
+      document.getElementById("btn_play").addEventListener('click', function(){
+         alert("chay duoc r");
+      })
+
       let theWheel = new Winwheel({
         drawMode: "image",
         drawText: true,

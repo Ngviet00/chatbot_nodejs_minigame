@@ -132,4 +132,7 @@ canvas{
    body{
       width:426px;
    }
+   canvas{
+      width:90% !important;
+   }
 }
