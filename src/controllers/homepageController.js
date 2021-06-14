@@ -9,11 +9,11 @@ let getSpinWheel = async (req, res) => {
    User.find()
       .then((result) => {
          myDoc = result;
-         console.log(result);
+         console.log(myDoc);
       })
       .catch((err) => { console.log(err) })
 
-   return res.render("spinwheel.ejs", { myDoc });
+   return res.render("spinwheel.ejs", { myDoc: myDoc });
    // User.find().then((allUser) => {
    //    return res.status(200).json({
    //       success: true,
