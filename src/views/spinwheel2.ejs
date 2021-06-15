@@ -49,6 +49,7 @@
          </div>
       </div>
     </div>
+
     <script type="text/javascript">
 
       let theWheel = new Winwheel({
@@ -117,45 +118,40 @@
             ""
          );
       }
-
-      //var btn_play = document.getElementById("btn_play");
-      //btn_play.addEventListener("click",startSpin);
-      btn_play.addEventListener("touchstart",startSpin)
+      //btn_play.addEventListener("touchstart",startSpin)
 
       (function (d, s, id) {
          var js,
-            fjs = d.getElementsByTagName(s)[0];
+           fjs = d.getElementsByTagName(s)[0];
          if (d.getElementById(id)) {
-            return;
+           return;
          }
          js = d.createElement(s);
          js.id = id;
          js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
          fjs.parentNode.insertBefore(js, fjs);
-      })(document, "script", "Messenger");
-      
-      window.extAsyncInit = function () {
-         MessengerExtensions.getContext(
-            "197041085597301",
-            function success(thread_context) {
-               document.getElementById("psid").value = thread_context.psid;
-            },
-            function error(err) {
-               console.log(err);
-            }
-         );
-      };
-      
-      function handleSaveBtn() {
-         document.getElementById("verify").style.display = "none";
-         
+       })(document, "script", "Messenger");
+     
+        window.extAsyncInit = function () {
+           MessengerExtensions.getContext(
+              "197041085597301",
+              function success(thread_context) {
+              document.getElementById("psid").value = thread_context.psid;
+              },
+              function error(err) {
+              console.log(err);
+              }
+           );
+        };
+     
+       function handleSaveBtn() {
          MessengerExtensions.requestCloseBrowser(
-            function success() { },
-            function error(err) {
-               console.log(err);
-            }
+           function success() {},
+           function error(err) {
+             console.log(err);
+           }
          );
-      }
+       }
     </script>
   </body>
 </html>

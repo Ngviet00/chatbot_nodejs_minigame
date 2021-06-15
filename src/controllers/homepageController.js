@@ -8,7 +8,7 @@ let getSpinWheel2 = (req, res) => {
    return res.render("spinwheel2.ejs");
 }
 
-let postSpinWheel2 = async (req, res) => {
+let postSpinWheel2 = (req, res) => {
    let response = {
       "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển !`
    };
