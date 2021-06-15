@@ -79,11 +79,23 @@ let getWebViewRegister = (req, res) => {
    return res.render("register.ejs");
 }
 
-let postWebViewRegister = (req, res) => {
+let postWebViewRegister = async (req, res) => {
    let response = {
       "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
    };
+
    callSendAPI(req.body.psid, response);
+   await MyModel.updateMany({ psid: psid }, {
+      $set: {
+         name: req.body.name,
+         number: req.body.number,
+         email: req.body.email,
+         txtDate: req.body.txtDate,
+         major: req.body.major,
+         address: req.body.address
+      }
+   });
+   console.log('update thanh cong');
    return res.redirect("/");
 
    // try {
