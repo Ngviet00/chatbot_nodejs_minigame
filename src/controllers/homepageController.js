@@ -85,7 +85,7 @@ let postWebViewRegister = async (req, res) => {
    };
 
    callSendAPI(req.body.psid, response);
-   await MyModel.updateMany({ psid: psid }, {
+   await User.updateMany({ psid: psid }, {
       $set: {
          name: req.body.name,
          number: req.body.number,
