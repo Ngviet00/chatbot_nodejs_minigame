@@ -36,6 +36,12 @@ let postSpinWheel2 = (req, res) => {
 
    var newUser = new User();
    newUser.psid = req.body.psid;
+   newUser.name = "";
+   newUser.number = "";
+   newUser.email = "";
+   newUser.txtDate = "";
+   newUser.major = "";
+   newUser.address = "";
    newUser.prize = req.body.display_value_spin;
    newUser.checkPrize = 1;
 
