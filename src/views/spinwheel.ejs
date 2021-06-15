@@ -50,6 +50,7 @@
       </div>
     </div>
     <script type="text/javascript">
+
       let theWheel = new Winwheel({
          drawMode: "image",
          drawText: true,
@@ -136,6 +137,18 @@
                document.getElementById("psid").value = thread_context.psid;
                var get_btn_play_spin = document.getElementById("btn_play");
                var flag = false;
+               console.log(thread_context.psid);
+
+               ("<% for(let i=0; i < myDoc.length; i++) { %>");
+                  if (thread_context.psid == "<%= myDoc[i].psid %>") {
+                     get_btn_play_spin.style.backgroundColor = "blue";
+                     get_btn_play_spin.innerText = "Play";
+                     get_btn_play_spin.style.cursor = "pointer";
+                     get_btn_play_spin.addEventListener("click", startSpin, true);
+                     get_btn_play_spin.addEventListener("touchstart", startSpin, true);
+                  }
+      
+               ("<% } %>");
       
                /*("<% for(let i=0; i < myDoc.length; i++) { %>");
                if (thread_context.psid == "<%= myDoc[i].psid %>") {
