@@ -22,7 +22,7 @@ let postSpinWheel2 = (req, res) => {
                {
                   "type": "web_url",
                   "url": "https://webview-chatbot.herokuapp.com/register",
-                  "title": "dang ky ",
+                  "title": "ĐĂNG KÝ ",
                   "messenger_extensions": "true",
                   "webview_height_ratio": "tall"
                }
