@@ -80,40 +80,46 @@ let getWebViewRegister = (req, res) => {
 }
 
 let postWebViewRegister = (req, res) => {
-   try {
-      let response = {
-         "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
-      };
-      callSendAPI(req.body.psid, response);
+   let response = {
+      "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+   };
+   callSendAPI(req.body.psid, response);
+   return res.redirect("/");
 
-      User.update({ psid: req.body.psid },
-         {
-            $set: {
-               name: req.body.name,
-               number: req.body.number,
-               email: req.body.email,
-               txtDate: req.body.txtDate,
-               major: req.body.major,
-               address: req.body.address
-            }
-         })
-         .exec()
-         .then(() => {
-            res.status(200).json({
-               success: true,
-               message: 'User is updated',
-            });
-         })
-         .catch((err) => {
-            res.status(500).json({
-               success: false,
-               message: 'Server error. Please try again.'
-            });
-         });
-      return res.redirect("/");
-   } catch (err) {
-      console.log(err);
-   }
+   // try {
+   //    let response = {
+   //       "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+   //    };
+   //    callSendAPI(req.body.psid, response);
+
+   //    User.update({ psid: req.body.psid },
+   //       {
+   //          $set: {
+   //             name: req.body.name,
+   //             number: req.body.number,
+   //             email: req.body.email,
+   //             txtDate: req.body.txtDate,
+   //             major: req.body.major,
+   //             address: req.body.address
+   //          }
+   //       })
+   //       .exec()
+   //       .then(() => {
+   //          res.status(200).json({
+   //             success: true,
+   //             message: 'User is updated',
+   //          });
+   //       })
+   //       .catch((err) => {
+   //          res.status(500).json({
+   //             success: false,
+   //             message: 'Server error. Please try again.'
+   //          });
+   //       });
+   //    return res.redirect("/");
+   // } catch (err) {
+   //    console.log(err);
+   // }
 
    // try {
    //    let response = {
