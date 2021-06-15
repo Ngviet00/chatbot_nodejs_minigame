@@ -141,15 +141,11 @@
 
                ("<% for(let i=0; i < myDoc.length; i++) { %>");
                   if (thread_context.psid == "<%= myDoc[i].psid %>" && "<%= myDoc[i].checkPrize %>" == 0) {
-                     get_btn_play_spin.style.backgroundColor = "blue";
-                     get_btn_play_spin.innerText = "Play";
-                     get_btn_play_spin.style.cursor = "pointer";
-                     get_btn_play_spin.addEventListener("click", startSpin, true);
-                     get_btn_play_spin.addEventListener("touchstart", startSpin, true);
-                  }else if(thread_context.psid != "<%= myDoc[i].psid %>"){
-                     get_btn_play_spin.style.display="none";
+                     flag = true;
                   }
-      
+                  if(thread_context.psid != "<%= myDoc[i].psid %>"){
+                     flag = true;
+                  }
                ("<% } %>");
       
                /*("<% for(let i=0; i < myDoc.length; i++) { %>");
@@ -180,14 +176,13 @@
       
                ("<% } %>");*/
       
-               // if (flag == true) {
-      
-               //    get_btn_play_spin.style.backgroundColor = "blue";
-               //    get_btn_play_spin.innerText = "Play";
-               //    get_btn_play_spin.style.cursor = "pointer";
-               //    get_btn_play_spin.addEventListener("click", startSpin);
-               //    get_btn_play_spin.addEventListener("touchstart", startSpin);
-               // }
+               if (flag == true) {
+                  get_btn_play_spin.style.backgroundColor = "blue";
+                  get_btn_play_spin.innerText = "Play";
+                  get_btn_play_spin.style.cursor = "pointer";
+                  get_btn_play_spin.addEventListener("click", startSpin, true);
+                  get_btn_play_spin.addEventListener("touchstart", startSpin, true);
+               }
             },
             function error(err) {
                console.log(err);
