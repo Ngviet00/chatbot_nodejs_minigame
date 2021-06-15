@@ -7,6 +7,7 @@
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
+    <script type="text/javascript" src="js/Winwheel.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
   </head>
   <body>
@@ -48,8 +49,148 @@
          </div>
       </div>
     </div>
-    <script type="text/javascript" src="js/Winwheel.js"></script>
-    <script type="text/javascript" src="js/spin.js"></script>
-    <script type="text/javascript" src="js/fb_message.js"></script>
+    <script type="text/javascript">
+      let theWheel = new Winwheel({
+         drawMode: "image",
+         drawText: true,
+         textOrientation: "curved",
+         textAlignment: "outer",
+         textMargin: 20,
+         numSegments: 6,
+         outerRadius: 212,
+         textFontSize: 16,
+         textFontFamily: 'Courier',
+         textFontWeight: 'bold',
+         segments: [
+            { text: "MacBook Pro 2020" },
+            { text: "Học\n\n Bổng\n\n 500.000đ" },
+            { text: "Học\n\n Bổng\n\n 2 Triệu" },
+            { text: "Học\n\n Bổng\n\n 1 Triệu" },
+            { text: "Google Pixel 5Xl" },
+            { text: "Iphone 12PRM" },
+         ],
+         animation: {
+            type: "spinToStop",
+            duration: 5,
+            spins: 6,
+            callbackSound: playSound,
+            callbackFinished: alertPrize,
+         },
+      });
+      
+      let secondImg = new Image();
+      secondImg.onload = function () {
+         theWheel.wheelImage = secondImg;
+         theWheel.draw();
+      };
+      secondImg.src = "cb.png";
+      
+      let wheelSpinning = false;
+      function startSpin() {
+         if (wheelSpinning == false) {
+            calculatePrize();
+            theWheel.animation.spins = 8;
+            theWheel.startAnimation();
+            wheelSpinning = true;
+         }
+      }
+      
+      let audio = new Audio("tick.mp3");
+      function playSound() {
+         audio.pause();
+         audio.currentTime = 0;
+         audio.play();
+      }
+      
+      function calculatePrize() {
+         let stopAt = 91 + Math.floor(Math.random() * 20);
+         theWheel.animation.stopAngle = stopAt;
+         theWheel.startAnimation();
+      }
+      
+      function alertPrize(indicatedSegment) {
+         const value = indicatedSegment.text;
+         document.getElementById("verify").style.display = "block";
+         document.getElementById("display_value_spin").value = value.replace(
+            /(\r\n|\n|\r)/gm,
+            ""
+         );
+      }
+      (function (d, s, id) {
+         var js,
+            fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {
+            return;
+         }
+         js = d.createElement(s);
+         js.id = id;
+         js.src = "//connect.facebook.net/en_US/messenger.Extensions.js";
+         fjs.parentNode.insertBefore(js, fjs);
+      })(document, "script", "Messenger");
+      
+      window.extAsyncInit = function () {
+         MessengerExtensions.getContext(
+            "197041085597301",
+            //208033644177404 cua thiep ml
+            function success(thread_context) {
+               document.getElementById("psid").value = thread_context.psid;
+               var get_btn_play_spin = document.getElementById("btn_play");
+               var flag = false;
+      
+               /*("<% for(let i=0; i < myDoc.length; i++) { %>");
+               if (thread_context.psid == "<%= myDoc[i].psid %>") {
+                  if ("<%= myDoc[i].checkPrize %>" == 0) {
+                     // flag = true;
+                     get_btn_play_spin.style.backgroundColor = "blue";
+                     get_btn_play_spin.innerText = "Play";
+                     get_btn_play_spin.style.cursor = "pointer";
+                     get_btn_play_spin.addEventListener("click", startSpin, true);
+                     get_btn_play_spin.addEventListener("touchstart", startSpin, true);
+                  } else {
+                     // flag = false;
+                     get_btn_play_spin.style.backgroundColor = "red";
+                     get_btn_play_spin.innerText = "Ban da het luot quay thuong";
+                     get_btn_play_spin.style.cursor = "not-allowed";
+                     get_btn_play_spin.removeEventListener("click", startSpin, true);
+                     get_btn_play_spin.removeEventListener("touchstart", startSpin, true);
+                  }
+               } else {
+                  // flag = true;
+                  get_btn_play_spin.style.backgroundColor = "blue";
+                  get_btn_play_spin.innerText = "Play";
+                  get_btn_play_spin.style.cursor = "pointer";
+                  get_btn_play_spin.addEventListener("click", startSpin, true);
+                  get_btn_play_spin.addEventListener("touchstart", startSpin, true);
+               }
+      
+               ("<% } %>");*/
+      
+               // if (flag == true) {
+      
+               //    get_btn_play_spin.style.backgroundColor = "blue";
+               //    get_btn_play_spin.innerText = "Play";
+               //    get_btn_play_spin.style.cursor = "pointer";
+               //    get_btn_play_spin.addEventListener("click", startSpin);
+               //    get_btn_play_spin.addEventListener("touchstart", startSpin);
+               // }
+            },
+            function error(err) {
+               console.log(err);
+            }
+         );
+      };
+      
+      function handleSaveBtn() {
+         document.getElementById("verify").style.display = "none";
+         MessengerExtensions.requestCloseBrowser(
+            function success() { },
+            function error(err) {
+               console.log(err);
+            }
+         );
+      }
+    </script>
+    <!-- <script type="text/javascript" src="js/spin.js"></script> -->
+    <!-- <script type="text/javascript" src="js/fb_message.js"></script> -->
   </body>
 </html>
