@@ -51,10 +51,6 @@
     </div>
     <script type="text/javascript">
 
-      var btn_play = document.getElementById("btn_play");
-      btn_play.addEventListener("click",startSpin,true);
-      btn_play.addEventListener("touchstart",startSpin,true)
-
       let theWheel = new Winwheel({
          drawMode: "image",
          drawText: true,
@@ -121,6 +117,11 @@
             ""
          );
       }
+
+      var btn_play = document.getElementById("btn_play");
+      btn_play.addEventListener("click",startSpin);
+      btn_play.addEventListener("touchstart",startSpin)
+
       (function (d, s, id) {
          var js,
             fjs = d.getElementsByTagName(s)[0];
