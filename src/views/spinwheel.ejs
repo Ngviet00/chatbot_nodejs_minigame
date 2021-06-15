@@ -146,6 +146,8 @@
                      get_btn_play_spin.style.cursor = "pointer";
                      get_btn_play_spin.addEventListener("click", startSpin, true);
                      get_btn_play_spin.addEventListener("touchstart", startSpin, true);
+                  }else if(thread_context.psid != "<%= myDoc[i].psid %>"){
+                     get_btn_play_spin.style.display="none";
                   }
       
                ("<% } %>");
