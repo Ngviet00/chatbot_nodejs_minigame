@@ -12,7 +12,27 @@ let postSpinWheel2 = async (req, res) => {
    let response = {
       "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển !`
    };
+   let register = {
+      "attachment": {
+         "type": "template",
+         "payload": {
+            "template_type": "button",
+            "text": "Bam vao day de dang ky",
+            "buttons": [
+               {
+                  "type": "web_url",
+                  "url": "https://webview-chatbot.herokuapp.com/register",
+                  "title": "dang ky ",
+                  "messenger_extensions": "true",
+                  "webview_height_ratio": "tall"
+               }
+            ]
+         }
+      }
+   }
+
    callSendAPI(req.body.psid, response);
+   callSendAPI(req.body.psid, register);
 
    var newUser = new User();
    newUser.psid = req.body.psid;
@@ -29,24 +49,24 @@ let postSpinWheel2 = async (req, res) => {
 }
 
 let getSpinWheel = (req, res) => {
-   User.find()
-      .then((result) => {
-         const myDoc = result;
-         return res.render("spinwheel.ejs", { myDoc: myDoc });
-      })
-      .catch((err) => { console.log(err) })
+   // User.find()
+   //    .then((result) => {
+   //       const myDoc = result;
+   //       return res.render("spinwheel.ejs", { myDoc: myDoc });
+   //    })
+   //    .catch((err) => { console.log(err) })
 }
 
 let postSpinWheel = async (req, res) => {
-   let response = {
-      "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
-   };
-   callSendAPI(req.body.psid, response);
-   await User.update(
-      { psid: req.body.psid },
-      { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
-   console.log('updated');
-   return res.redirect("/");
+   // let response = {
+   //    "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+   // };
+   // callSendAPI(req.body.psid, response);
+   // await User.update(
+   //    { psid: req.body.psid },
+   //    { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
+   // console.log('updated');
+   // return res.redirect("/");
 }
 
 let getWebViewRegister = (req, res) => {
@@ -58,47 +78,80 @@ let postWebViewRegister = (req, res) => {
       let response = {
          "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
       };
-      let prize = {
-         "attachment": {
-            "type": "template",
-            "payload": {
-               "template_type": "button",
-               "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng, tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
-               "buttons": [
-                  {
-                     "type": "web_url",
-                     "url": "https://webview-chatbot.herokuapp.com/spin",
-                     "title": "QUAY THƯỞNG",
-                     "messenger_extensions": "true",
-                     "webview_height_ratio": "tall"
-                  }
-               ]
-            }
-         }
-      }
       callSendAPI(req.body.psid, response);
-      callSendAPI(req.body.psid, prize);
-      var newUser = new User();
-      newUser.psid = req.body.psid;
-      newUser.name = req.body.name;
-      newUser.number = req.body.number;
-      newUser.email = req.body.email;
-      newUser.txtDate = req.body.txtDate;
-      newUser.major = req.body.major;
-      newUser.address = req.body.address;
-      newUser.prize = "";
-      newUser.checkPrize = 0
-      newUser.save().then(function (err) {
-         if (err) { console.log(err) }
-         else {
-            console.log("them thanh cong");
-         }
-      })
-      return res.redirect("/");
 
+      User.update({ psid: req.body.psid },
+         {
+            $set: {
+               name: req.body.name,
+               number: req.body.number,
+               email: req.body.email,
+               txtDate: req.body.txtDate,
+               major: req.body.major,
+               address: req.body.address
+            }
+         })
+         .exec()
+         .then(() => {
+            res.status(200).json({
+               success: true,
+               message: 'User is updated',
+            });
+         })
+         .catch((err) => {
+            res.status(500).json({
+               success: false,
+               message: 'Server error. Please try again.'
+            });
+         });
    } catch (err) {
       console.log(err);
    }
+   // try {
+   //    let response = {
+   //       "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+   //    };
+   //    let prize = {
+   //       "attachment": {
+   //          "type": "template",
+   //          "payload": {
+   //             "template_type": "button",
+   //             "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng, tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
+   //             "buttons": [
+   //                {
+   //                   "type": "web_url",
+   //                   "url": "https://webview-chatbot.herokuapp.com/spin",
+   //                   "title": "QUAY THƯỞNG",
+   //                   "messenger_extensions": "true",
+   //                   "webview_height_ratio": "tall"
+   //                }
+   //             ]
+   //          }
+   //       }
+   //    }
+   //    callSendAPI(req.body.psid, response);
+   //    callSendAPI(req.body.psid, prize);
+   //    var newUser = new User();
+   //    newUser.psid = req.body.psid;
+   //    newUser.name = req.body.name;
+   //    newUser.number = req.body.number;
+   //    newUser.email = req.body.email;
+   //    newUser.txtDate = req.body.txtDate;
+   //    newUser.major = req.body.major;
+   //    newUser.address = req.body.address;
+   //    newUser.prize = "";
+   //    newUser.checkPrize = 0
+   //    newUser.save().then(function (err) {
+   //       if (err) { console.log(err) }
+   //       else {
+   //          console.log("them thanh cong");
+   //       }
+   //    })
+   //    return res.redirect("/");
+
+   // } catch (err) {
+   //    console.log(err);
+   // }
 }
 
 let getHomepage = (req, res) => {
