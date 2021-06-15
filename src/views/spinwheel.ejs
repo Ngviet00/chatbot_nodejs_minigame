@@ -140,7 +140,7 @@
                console.log(thread_context.psid);
 
                ("<% for(let i=0; i < myDoc.length; i++) { %>");
-                  if (thread_context.psid == "<%= myDoc[i].psid %>") {
+                  if (thread_context.psid == "<%= myDoc[i].psid %>" && "<%= myDoc[i].checkPrize %>" == 0) {
                      get_btn_play_spin.style.backgroundColor = "blue";
                      get_btn_play_spin.innerText = "Play";
                      get_btn_play_spin.style.cursor = "pointer";
