@@ -10,7 +10,7 @@ let getSpinWheel2 = (req, res) => {
 
 let postSpinWheel2 = (req, res) => {
    let response = {
-      "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển !`
+      "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển !`
    };
    let register = {
       "attachment": {
@@ -65,7 +65,7 @@ let getSpinWheel = (req, res) => {
 
 let postSpinWheel = async (req, res) => {
    let response = {
-      "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+      "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
    };
    callSendAPI(req.body.psid, response);
    await User.update(
@@ -85,7 +85,7 @@ let postWebViewRegister = async (req, res) => {
    };
 
    callSendAPI(req.body.psid, response);
-   await User.updateMany({ psid: psid }, {
+   await User.updateMany({ psid: req.body.psid }, {
       $set: {
          name: req.body.name,
          number: req.body.number,
