@@ -49,24 +49,24 @@ let postSpinWheel2 = async (req, res) => {
 }
 
 let getSpinWheel = (req, res) => {
-   // User.find()
-   //    .then((result) => {
-   //       const myDoc = result;
-   //       return res.render("spinwheel.ejs", { myDoc: myDoc });
-   //    })
-   //    .catch((err) => { console.log(err) })
+   User.find()
+      .then((result) => {
+         const myDoc = result;
+         return res.render("spinwheel.ejs", { myDoc: myDoc });
+      })
+      .catch((err) => { console.log(err) })
 }
 
 let postSpinWheel = async (req, res) => {
-   // let response = {
-   //    "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
-   // };
-   // callSendAPI(req.body.psid, response);
-   // await User.update(
-   //    { psid: req.body.psid },
-   //    { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
-   // console.log('updated');
-   // return res.redirect("/");
+   let response = {
+      "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+   };
+   callSendAPI(req.body.psid, response);
+   await User.update(
+      { psid: req.body.psid },
+      { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
+   console.log('updated');
+   return res.redirect("/");
 }
 
 let getWebViewRegister = (req, res) => {
@@ -104,9 +104,11 @@ let postWebViewRegister = (req, res) => {
                message: 'Server error. Please try again.'
             });
          });
+      return res.redirect("/");
    } catch (err) {
       console.log(err);
    }
+
    // try {
    //    let response = {
    //       "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`

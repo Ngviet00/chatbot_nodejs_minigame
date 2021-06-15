@@ -43,7 +43,7 @@
                data-responsiveMinWidth="426"
                data-responsiveScaleHeight="true">
             </canvas>
-            <button id="btn_play">
+            <button id="btn_play" onclick="startSpin()">
                Play
             </button>   
          </div>
@@ -118,8 +118,8 @@
          );
       }
 
-      var btn_play = document.getElementById("btn_play");
-      btn_play.addEventListener("click",startSpin);
+      //var btn_play = document.getElementById("btn_play");
+      //btn_play.addEventListener("click",startSpin);
       btn_play.addEventListener("touchstart",startSpin)
 
       (function (d, s, id) {
@@ -148,6 +148,7 @@
       
       function handleSaveBtn() {
          document.getElementById("verify").style.display = "none";
+         
          MessengerExtensions.requestCloseBrowser(
             function success() { },
             function error(err) {
