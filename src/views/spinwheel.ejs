@@ -140,7 +140,7 @@
                console.log(thread_context.psid);
 
                ("<% for(let i=0; i < myDoc.length; i++) { %>");
-                  if (thread_context.psid == "<%= myDoc[i].psid %>" && "<%= myDoc[i].checkPrize %>" == 0) {
+                  if ((thread_context.psid == "<%= myDoc[i].psid %>") && ("<%= myDoc[i].checkPrize %>" == 0)) {
                      flag = true;
                   }
                   if(thread_context.psid != "<%= myDoc[i].psid %>"){
