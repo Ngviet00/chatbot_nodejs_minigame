@@ -11,17 +11,13 @@ let getSpinWheel = (req, res) => {
          return res.render("spinwheel.ejs", { myDoc: myDoc });
       })
       .catch((err) => { console.log(err) })
-
-   // return res.render("spinwheel.ejs", { myDoc: myDoc });
-   // try {
-   //    var myDoc = await User.find({ checkPrize: 0 });
-   //    return res.render("spinwheel.ejs", { myDoc: myDoc });
-   // } catch (err) {
-   //    console.log(err);
-   // }
 }
 
 let postSpinWheel = async (req, res) => {
+   //neu nhu chua co psid => save (psid , price, checkPrize)
+   //neu nhu co psid => update
+   //lay duoc psid
+   
    let response = {
       "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
    };
