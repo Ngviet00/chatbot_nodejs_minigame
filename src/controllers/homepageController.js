@@ -4,6 +4,30 @@ const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 var User = require('./../DB/User');
 
+let getSpinWheel2 = (req, res) => {
+   return res.render("spinwheel2.ejs");
+}
+
+let postSpinWheel2 = async (req, res) => {
+   let response = {
+      "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển !`
+   };
+   callSendAPI(req.body.psid, response);
+
+   var newUser = new User();
+   newUser.psid = req.body.psid;
+   newUser.prize = req.body.display_value_spin;
+   newUser.checkPrize = 1;
+
+   newUser.save().then(function (err) {
+      if (err) { console.log(err) }
+      else {
+         console.log("them thanh cong");
+      }
+   })
+   return res.redirect("/");
+}
+
 let getSpinWheel = (req, res) => {
    User.find()
       .then((result) => {
@@ -14,10 +38,6 @@ let getSpinWheel = (req, res) => {
 }
 
 let postSpinWheel = async (req, res) => {
-   //neu nhu chua co psid => save (psid , price, checkPrize)
-   //neu nhu co psid => update
-   //lay duoc psid
-   
    let response = {
       "text": `Chúc mừng em nhận đã được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
    };
@@ -179,5 +199,7 @@ module.exports = {
    getWebViewRegister: getWebViewRegister,
    postWebViewRegister: postWebViewRegister,
    getSpinWheel: getSpinWheel,
-   postSpinWheel: postSpinWheel
+   postSpinWheel: postSpinWheel,
+   getSpinWheel2: getSpinWheel2,
+   postSpinWheel2: postSpinWheel2
 };
