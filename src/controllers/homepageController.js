@@ -4,6 +4,29 @@ const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 var User = require('./../DB/User');
 
+
+let getSpinWheel = (req, res) => {
+   User.find()
+      .then((result) => {
+         const myDoc = result;
+         return res.render("spinwheel.ejs", { myDoc: myDoc });
+      })
+      .catch((err) => { console.log(err) })
+}
+
+let postSpinWheel = async (req, res) => {
+   let response = {
+      "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+   };
+   callSendAPI(req.body.psid, response);
+   await User.update(
+      { psid: req.body.psid },
+      { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
+   console.log('updated');
+   return res.redirect("/");
+}
+
+
 let getSpinWheel2 = async (req, res) => {
    return res.render("spinwheel2.ejs");
 }
@@ -322,24 +345,3 @@ module.exports = {
    postSpinWheel2: postSpinWheel2
 };
 
-
-// let getSpinWheel = (req, res) => {
-//    User.find()
-//       .then((result) => {
-//          const myDoc = result;
-//          return res.render("spinwheel.ejs", { myDoc: myDoc });
-//       })
-//       .catch((err) => { console.log(err) })
-// }
-
-// let postSpinWheel = async (req, res) => {
-//    let response = {
-//       "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
-//    };
-//    callSendAPI(req.body.psid, response);
-//    await User.update(
-//       { psid: req.body.psid },
-//       { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
-//    console.log('updated');
-//    return res.redirect("/");
-// }
