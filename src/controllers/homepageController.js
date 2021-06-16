@@ -4,35 +4,20 @@ const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 var User = require('./../DB/User');
 
-let getSpinWheel2 = (req, res) => {
+let getSpinWheel2 = async (req, res) => {
    return res.render("spinwheel2.ejs");
 }
 
 let postSpinWheel2 = (req, res) => {
+
    let response = {
       "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường, chúc em sớm trở thành tân sinh viên của Trường Đại học Kinh Bắc nhé!`
    };
-   let register = {
-      "attachment": {
-         "type": "template",
-         "payload": {
-            "template_type": "button",
-            "text": "Em nhấn vào đây để đăng ký nhé.",
-            "buttons": [
-               {
-                  "type": "web_url",
-                  "url": "https://webview-chatbot.herokuapp.com/register",
-                  "title": "ĐĂNG KÝ ",
-                  "messenger_extensions": "true",
-                  "webview_height_ratio": "tall"
-               }
-            ]
-         }
-      }
-   }
-
    callSendAPI(req.body.psid, response);
-   callSendAPI(req.body.psid, register);
+
+   //neu chua chua co psid thi => luu code o duoi => sau do mo file add
+   // neu k co thi update 3 truong
+
 
    var newUser = new User();
    newUser.psid = req.body.psid;
@@ -44,57 +29,111 @@ let postSpinWheel2 = (req, res) => {
    newUser.address = "";
    newUser.prize = req.body.display_value_spin;
    newUser.checkPrize = 1;
-
    newUser.save().then(function (err) {
       if (err) { console.log(err) }
       else {
          console.log("them thanh cong");
       }
-   })
+   });
+
+   // NẾU NHƯ CÓ DỮ LIỆU RỒI KHÔNG HIỆN FORM ĐĂNG KI NỮA
+   //NẾU NHƯ CHƯA CÓ HIỆN FORM DANG Ky
+   // CHECK DATABSE FIND COUNT CÓ PSID ,NAME =="", EMAIL==""
+   //IF COUNT >= 1 > HIENJ FORM DANG KY
+   //ELSE KHONG HIEN
+
+   const checkExist = await User().find({ psid: req.body.psid, name: "", email: "" }).count();
+
+   if (checkExist >= 1) {
+      let register = {
+         "attachment": {
+            "type": "template",
+            "payload": {
+               "template_type": "button",
+               "text": "Em nhấn vào đây để đăng ký nhé.",
+               "buttons": [
+                  {
+                     "type": "web_url",
+                     "url": "https://webview-chatbot.herokuapp.com/register",
+                     "title": "ĐĂNG KÝ ",
+                     "messenger_extensions": "true",
+                     "webview_height_ratio": "tall"
+                  }
+               ]
+            }
+         }
+      }
+      callSendAPI(req.body.psid, register);
+   }
    return res.redirect("/");
 }
 
-let getSpinWheel = (req, res) => {
-   User.find()
-      .then((result) => {
-         const myDoc = result;
-         return res.render("spinwheel.ejs", { myDoc: myDoc });
-      })
-      .catch((err) => { console.log(err) })
-}
-
-let postSpinWheel = async (req, res) => {
-   let response = {
-      "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
-   };
-   callSendAPI(req.body.psid, response);
-   await User.update(
-      { psid: req.body.psid },
-      { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
-   console.log('updated');
-   return res.redirect("/");
-}
 
 let getWebViewRegister = (req, res) => {
    return res.render("register.ejs");
 }
 
 let postWebViewRegister = async (req, res) => {
+
    let response = {
       "text": `Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
    };
-
    callSendAPI(req.body.psid, response);
-   await User.updateMany({ psid: req.body.psid }, {
-      $set: {
-         name: req.body.name,
-         number: req.body.number,
-         email: req.body.email,
-         txtDate: req.body.txtDate,
-         major: req.body.major,
-         address: req.body.address
+
+   const countData = await User().find({ psid: req.body.psid, checkPrize: 1 }).count(); // 1 0
+   if (countData >= 1) {
+      await User.updateMany({ psid: req.body.psid }, {
+         $set: {
+            name: req.body.name,
+            number: req.body.number,
+            email: req.body.email,
+            txtDate: req.body.txtDate,
+            major: req.body.major,
+            address: req.body.address
+         }
+      });
+   }
+   //CHƯA QUAY => THÊM DỮ LIỆU => HIỆN FORM SPIN
+   else {
+      var newUser = new User();
+      newUser.psid = req.body.psid;
+      newUser.name = req.body.name;
+      newUser.number = req.body.number;
+      newUser.email = req.body.email;
+      newUser.txtDate = req.body.txtDate;
+      newUser.major = req.body.major;
+      newUser.address = req.body.address;
+      newUser.prize = "";
+      newUser.checkPrize = 0;
+
+      newUser.save().then(function (err) {
+         if (err) { console.log(err) }
+         else {
+            console.log("them thanh cong");
+         }
+      })
+
+      let prize = {
+         "attachment": {
+            "type": "template",
+            "payload": {
+               "template_type": "button",
+               "text": "Để chào mừng tân sinh viên, Trường gửi tới các bạn 1 suất học bổng, tổng giá trị học bổng lên đến 100 triệu đồng, bạn hãy nhấn vào đường dẫn bên dưới để lấy học bổng nhé!",
+               "buttons": [
+                  {
+                     "type": "web_url",
+                     "url": "https://webview-chatbot.herokuapp.com/spin2",
+                     "title": "QUAY THƯỞNG",
+                     "messenger_extensions": "true",
+                     "webview_height_ratio": "tall"
+                  }
+               ]
+            }
+         }
       }
-   });
+      callSendAPI(req.body.psid, prize);
+   }
+   console.log(countData);
    console.log('update thanh cong');
    return res.redirect("/");
 
@@ -282,3 +321,25 @@ module.exports = {
    getSpinWheel2: getSpinWheel2,
    postSpinWheel2: postSpinWheel2
 };
+
+
+// let getSpinWheel = (req, res) => {
+//    User.find()
+//       .then((result) => {
+//          const myDoc = result;
+//          return res.render("spinwheel.ejs", { myDoc: myDoc });
+//       })
+//       .catch((err) => { console.log(err) })
+// }
+
+// let postSpinWheel = async (req, res) => {
+//    let response = {
+//       "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+//    };
+//    callSendAPI(req.body.psid, response);
+//    await User.update(
+//       { psid: req.body.psid },
+//       { $set: { prize: req.body.display_value_spin, checkPrize: 1 } });
+//    console.log('updated');
+//    return res.redirect("/");
+// }
