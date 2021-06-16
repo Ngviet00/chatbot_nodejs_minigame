@@ -27,7 +27,7 @@ let postSpinWheel = async (req, res) => {
 }
 
 
-let getSpinWheel2 = async (req, res) => {
+let getSpinWheel2 = (req, res) => {
    return res.render("spinwheel2.ejs");
 }
 
@@ -37,10 +37,6 @@ let postSpinWheel2 = async (req, res) => {
       "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường, chúc em sớm trở thành tân sinh viên của Trường Đại học Kinh Bắc nhé!`
    };
    callSendAPI(req.body.psid, response);
-
-   //neu chua chua co psid thi => luu code o duoi => sau do mo file add
-   // neu k co thi update 3 truong
-
 
    var newUser = new User();
    newUser.psid = req.body.psid;
@@ -64,6 +60,7 @@ let postSpinWheel2 = async (req, res) => {
    // CHECK DATABSE FIND COUNT CÓ PSID ,NAME =="", EMAIL==""
    //IF COUNT >= 1 > HIENJ FORM DANG KY
    //ELSE KHONG HIEN
+
 
    const checkExist = await User().find({ psid: req.body.psid, name: "", email: "" }).count();
 
