@@ -12,7 +12,7 @@ let getSpinWheel = (req, res) => {
 let postSpinWheel = async (req, res) => {
 
    let response = {
-      "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho em và lưu lại thông tin học bổng của em nhé!`
+      "text": `Chúc mừng bạn đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường! Nhà trường sẽ liên hệ lại tư vấn thêm cho bạn và lưu lại thông tin học bổng của bạn nhé!`
    };
    callSendAPI(req.body.psid, response);
 
@@ -31,27 +31,9 @@ let getWebViewRegister2 = (req, res) => {
 }
 //co
 let postWebViewRegister2 = (req, res) => {
-
    let response = {
-      "text": `Bạn đã đăng ký thành công,Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+      "text": `Bạn đã đăng ký thành công,Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với bạn, bạn nhớ để ý điện thoại nhé!Chúc bạn sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
    };
-   callSendAPI(req.body.psid, response);
-   var newUser = new User();
-   newUser.psid = req.body.psid;
-   newUser.name = req.body.name;
-   newUser.number = req.body.number;
-   newUser.email = req.body.email;
-   newUser.txtDate = req.body.txtDate;
-   newUser.major = req.body.major;
-   newUser.address = req.body.address;
-   newUser.prize = "";
-   newUser.checkPrize = 0;
-   newUser.save().then(function (err) {
-      if (err) { console.log(err) }
-      else {
-         console.log("them thanh cong");
-      }
-   });
    let prize = {
       "attachment": {
          "type": "template",
@@ -70,7 +52,25 @@ let postWebViewRegister2 = (req, res) => {
          }
       }
    }
+
+   callSendAPI(req.body.psid, response);
    callSendAPI(req.body.psid, prize);
+   var newUser = new User();
+   newUser.psid = req.body.psid;
+   newUser.name = req.body.name;
+   newUser.number = req.body.number;
+   newUser.email = req.body.email;
+   newUser.txtDate = req.body.txtDate;
+   newUser.major = req.body.major;
+   newUser.address = req.body.address;
+   newUser.prize = "";
+   newUser.checkPrize = 0;
+   newUser.save().then(function (err) {
+      if (err) { console.log(err) }
+      else {
+         console.log("them thanh cong");
+      }
+   });
    console.log('update thanh cong');
    return res.redirect("/");
 }
@@ -82,7 +82,7 @@ let getSpinWheel2 = (req, res) => {
 //true
 let postSpinWheel2 = (req, res) => {
    let response = {
-      "text": `Chúc mừng em đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường, chúc em sớm trở thành tân sinh viên của Trường Đại học Kinh Bắc nhé!`
+      "text": `Chúc mừng bạn đã nhận được ${req.body.display_value_spin} khi trúng tuyển vào trường, chúc bạn sớm trở thành tân sinh viên của Trường Đại học Kinh Bắc nhé!`
    };
    let register = {
       "attachment": {
@@ -130,7 +130,7 @@ let getWebViewRegister = (req, res) => {
 let postWebViewRegister = async (req, res) => {
 
    let response = {
-      "text": `Bạn đã đăng ký thành công,Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với em, em nhớ để ý điện thoại em nhé!Chúc em sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
+      "text": `Bạn đã đăng ký thành công,Bộ phận tuyển sinh của Phòng Đào Tạo sẽ liên hệ lại với bạn, bạn nhớ để ý điện thoại nhé ! Chúc bạn sớm trở thành Sinh viên của Trường Đại Học Kinh Bắc!`
    };
    callSendAPI(req.body.psid, response);
 
