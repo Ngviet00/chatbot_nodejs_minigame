@@ -12,6 +12,9 @@ let initWebRoutes = (app) => {
    router.get("/register", homepageController.getWebViewRegister);
    router.post("/set-up-register", homepageController.postWebViewRegister);
 
+   router.get("/register2", homepageController.getWebViewRegister2);
+   router.post("/set-up-register-2", homepageController.postWebViewRegister2);
+
    router.get("/spin", homepageController.getSpinWheel);
    router.post("/set-up-spin", homepageController.postSpinWheel);
 

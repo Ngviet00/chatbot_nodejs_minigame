@@ -1,7 +1,7 @@
 <html>
   <head>
     <title>Spinwheel</title>
-    <link rel="stylesheet" href="css/spinwheel.css" type="text/css" />
+    <link rel="stylesheet" href="css/spinwheel2.css" type="text/css" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link
       rel="stylesheet"
@@ -43,8 +43,8 @@
                data-responsiveMinWidth="426"
                data-responsiveScaleHeight="true">
             </canvas>
-            <button id="btn_play">
-               Bạn không có lượt quay thưởng
+            <button id="btn_play" onclick="startSpin()">
+               Play
             </button>   
          </div>
       </div>
@@ -131,68 +131,14 @@
       
       window.extAsyncInit = function () {
          MessengerExtensions.getContext(
-            "197041085597301",
-            //208033644177404 cua thiep ml
+            "208033644177404",
             function success(thread_context) {
-               document.getElementById("psid").value = thread_context.psid;
-
-               
-               //var get_btn_play_spin = document.getElementById("btn_play");
-
-
-               
-
-               /*("<% for(let i=0; i < myDoc.length; i++) { %>");
-                  if (thread_context.psid == "<%= myDoc[i].psid %>" ) {
-                     
-                     if("<%= myDoc[i].checkPrize %>" == 0){
-                        flag = true;
-                     }else{
-                        flag = false;
-                     }  
-                  }else{
-                     flag = true;
-                  }
-                  
-               ("<% } %>");*/
-
-               /*if (flag == true) {
-                  get_btn_play_spin.style.backgroundColor = "blue";
-                  get_btn_play_spin.innerText = "Play";
-                  get_btn_play_spin.style.cursor = "pointer";
-                  get_btn_play_spin.addEventListener("click", startSpin, true);
-                  get_btn_play_spin.addEventListener("touchstart", startSpin, true);
-               }*/
-      
-               /*("<% for(let i=0; i < myDoc.length; i++) { %>");
-               if (thread_context.psid == "<%= myDoc[i].psid %>") {
-                  if ("<%= myDoc[i].checkPrize %>" == 0) {
-                     // flag = true;
-                     get_btn_play_spin.style.backgroundColor = "blue";
-                     get_btn_play_spin.innerText = "Play";
-                     get_btn_play_spin.style.cursor = "pointer";
-                     get_btn_play_spin.addEventListener("click", startSpin, true);
-                     get_btn_play_spin.addEventListener("touchstart", startSpin, true);
-                  } else {
-                     // flag = false;
-                     get_btn_play_spin.style.backgroundColor = "red";
-                     get_btn_play_spin.innerText = "Ban da het luot quay thuong";
-                     get_btn_play_spin.style.cursor = "not-allowed";
-                     get_btn_play_spin.removeEventListener("click", startSpin, true);
-                     get_btn_play_spin.removeEventListener("touchstart", startSpin, true);
-                  }
-               } else {
-                  // flag = true;
-                  get_btn_play_spin.style.backgroundColor = "blue";
-                  get_btn_play_spin.innerText = "Play";
-                  get_btn_play_spin.style.cursor = "pointer";
-                  get_btn_play_spin.addEventListener("click", startSpin, true);
-                  get_btn_play_spin.addEventListener("touchstart", startSpin, true);
-               }
-      
-               ("<% } %>");*/
-      
-               
+               document.getElementById("psid").value = thread_context.psid; 
+               /*get_btn_play_spin.style.backgroundColor = "red";
+               get_btn_play_spin.innerText = "Ban da het luot quay thuong";
+               get_btn_play_spin.style.cursor = "not-allowed";
+               get_btn_play_spin.removeEventListener("click", startSpin, true);
+               get_btn_play_spin.removeEventListener("touchstart", startSpin, true);*/
             },
             function error(err) {
                console.log(err);
